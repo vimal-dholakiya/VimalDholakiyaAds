@@ -23,6 +23,10 @@
         <meta-data android:name="com.google.android.gms.ads.flag.NATIVE_AD_DEBUGGER_ENABLED"
             android:value="false" />
 
+        <meta-data
+            android:name="applovin.sdk.key"
+            android:value="OoVicuSE_6dVkTnZ9kO67XO17hAqRXOdR5KToHkHP3P3SvSnBI8CUmuxbWFg0hHk8kXx2byHKiial9QUapI_ls"/>
+
     </application>
 
 

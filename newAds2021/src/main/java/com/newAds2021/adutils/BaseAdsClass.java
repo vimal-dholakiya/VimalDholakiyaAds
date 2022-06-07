@@ -24,9 +24,11 @@ import android.util.Log;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
@@ -42,6 +44,17 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.applovin.mediation.MaxAd;
+import com.applovin.mediation.MaxAdListener;
+import com.applovin.mediation.MaxAdViewAdListener;
+import com.applovin.mediation.MaxError;
+import com.applovin.mediation.ads.MaxAdView;
+import com.applovin.mediation.ads.MaxInterstitialAd;
+import com.applovin.mediation.nativeAds.MaxNativeAdListener;
+import com.applovin.mediation.nativeAds.MaxNativeAdLoader;
+import com.applovin.mediation.nativeAds.MaxNativeAdView;
+import com.applovin.sdk.AppLovinSdk;
+import com.applovin.sdk.AppLovinSdkConfiguration;
 import com.bumptech.glide.Glide;
 import com.facebook.ads.Ad;
 import com.facebook.ads.AdOptionsView;
@@ -95,6 +108,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.Callable;
+import java.util.concurrent.TimeUnit;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -141,7 +155,13 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
     AdsPrefernce adsPrefernce;
 
     String Url;
-    ArrayList<BlogMoviesModel> movies;
+
+    int retryAttempt;
+    MaxInterstitialAd interstitialAd;
+    public MaxNativeAdLoader nativeAdLoader;
+    public MaxAd nativeAd;
+
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -173,6 +193,15 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
             public void onInitializationComplete(InitializationStatus initializationStatus) {
             }
         });
+
+        AppLovinSdk.getInstance(this).setMediationProvider("max");
+        AppLovinSdk.initializeSdk(this, new AppLovinSdk.SdkInitializationListener() {
+            @Override
+            public void onSdkInitialized(final AppLovinSdkConfiguration configuration) {
+                // AppLovin SDK is initialized, start loading ads
+            }
+        });
+
 
     }
 
@@ -6731,30 +6760,219 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
         }
     }
 
-//    public void getBlogMoviesList() {
-//
-//        MoviesAPI.apiInterface().getMoviesList(adsPrefernce.extrapara1(), "Blog_Movies").enqueue(new Callback<MoviesResponse>() {
-//            @Override
-//            public void onResponse(Call<MoviesResponse> call, retrofit2.Response<MoviesResponse> response) {
-//                try {
-//                    if (response.body().getBlog_Movies() != null) {
-//
-//                        Toast.makeText(BaseAdsClass.this, "runnn"+response.body().getBlog_Movies().get(0).getId(), Toast.LENGTH_SHORT).show();
-//
-//                    }
-//
-//                } catch (Exception e) {
-//                    e.printStackTrace();
-//
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(Call<MoviesResponse> call, Throwable t) {
-//            }
-//
-//        });
-//
-//    }
+    public void showMAXBanner() {
+        if (adsPrefernce.isUpdate_fb()) {
+            LinearLayout adContainer = (LinearLayout) this.findViewById(R.id.banner_adView);
+            adContainer.setVisibility(View.GONE);
+            MaxAdView adView = new MaxAdView(adsPrefernce.adDialogTitle_fb(), this);
+            int width = ViewGroup.LayoutParams.MATCH_PARENT;
+            int heightPx = getResources().getDimensionPixelSize(R.dimen.banner_height);
+            adView.setLayoutParams(new FrameLayout.LayoutParams(width, heightPx));
+            adView.setListener(new MaxAdViewAdListener() {
+                @Override
+                public void onAdExpanded(MaxAd ad) {
+
+                }
+
+                @Override
+                public void onAdCollapsed(MaxAd ad) {
+
+                }
+
+                @Override
+                public void onAdLoaded(MaxAd maxAd) {
+                    adView.setVisibility(View.VISIBLE);
+                    adContainer.setVisibility(View.VISIBLE);
+                    adView.startAutoRefresh();
+                }
+
+                @Override
+                public void onAdDisplayed(MaxAd ad) {
+
+                }
+
+                @Override
+                public void onAdHidden(MaxAd ad) {
+
+                }
+
+                @Override
+                public void onAdClicked(MaxAd ad) {
+
+                }
+
+                @Override
+                public void onAdLoadFailed(String adUnitId, MaxError error) {
+                    adView.destroy();
+                    adView.setVisibility(View.GONE);
+                    adContainer.setVisibility(View.GONE);
+                    adView.stopAutoRefresh();
+                }
+
+                @Override
+                public void onAdDisplayFailed(MaxAd ad, MaxError error) {
+
+                }
+            });
+            adContainer.removeAllViews();
+            adContainer.addView(adView);
+            adView.loadAd();
+        }
+
+
+    }
+
+    public void showMAXNativeAd() {
+        if (adsPrefernce.isAds_fb()) {
+            FrameLayout nativeAdContainer = findViewById(R.id.MAX_native_ad_layout);
+            nativeAdContainer.setBackgroundColor(getResources().getColor(R.color.white));
+            nativeAdContainer.setVisibility(View.VISIBLE);
+            nativeAdLoader = new MaxNativeAdLoader(adsPrefernce.adShortDesc_fb(), this);
+            nativeAdLoader.setNativeAdListener(new MaxNativeAdListener() {
+                @Override
+                public void onNativeAdLoaded(final MaxNativeAdView nativeAdView, final MaxAd ad) {
+                    // Clean up any pre-existing native ad to prevent memory leaks.
+                    if (nativeAd != null) {
+                        nativeAdLoader.destroy(nativeAd);
+                    }
+
+                    // Save ad for cleanup.
+                    nativeAd = ad;
+
+                    // Add ad view to view.
+                    nativeAdContainer.removeAllViews();
+                    nativeAdContainer.addView(nativeAdView);
+                }
+
+                @Override
+                public void onNativeAdLoadFailed(final String adUnitId, final MaxError error) {
+                    // We recommend retrying with exponentially higher delays up to a maximum delay
+                }
+
+                @Override
+                public void onNativeAdClicked(final MaxAd ad) {
+                    // Optional click callback
+                }
+            });
+
+            nativeAdLoader.loadAd();
+        }
+
+    }
+
+    public void showMAXSmallNativeAd() {
+        if (adsPrefernce.adShowCancel_fb()) {
+            FrameLayout nativeAdContainer = findViewById(R.id.MAX_native_small_ad_layout);
+            nativeAdContainer.setBackgroundColor(getResources().getColor(R.color.white));
+            nativeAdContainer.setVisibility(View.VISIBLE);
+            nativeAdLoader = new MaxNativeAdLoader(adsPrefernce.adMessage_fb(), this);
+            nativeAdLoader.setNativeAdListener(new MaxNativeAdListener() {
+                @Override
+                public void onNativeAdLoaded(final MaxNativeAdView nativeAdView, final MaxAd ad) {
+                    // Clean up any pre-existing native ad to prevent memory leaks.
+                    if (nativeAd != null) {
+                        nativeAdLoader.destroy(nativeAd);
+                    }
+
+                    // Save ad for cleanup.
+                    nativeAd = ad;
+
+                    // Add ad view to view.
+                    nativeAdContainer.removeAllViews();
+                    nativeAdContainer.addView(nativeAdView);
+                }
+
+                @Override
+                public void onNativeAdLoadFailed(final String adUnitId, final MaxError error) {
+                    // We recommend retrying with exponentially higher delays up to a maximum delay
+                }
+
+                @Override
+                public void onNativeAdClicked(final MaxAd ad) {
+                    // Optional click callback
+                }
+            });
+
+            nativeAdLoader.loadAd();
+        }
+
+    }
+
+    public void loadMAXInterstitial() {
+        if (adsPrefernce.isNotification_fb()) {
+            interstitialAd = new MaxInterstitialAd(adsPrefernce.adAppName_fb(), this);
+            interstitialAd.setListener(new MaxAdListener() {
+                @Override
+                public void onAdLoaded(MaxAd ad) {
+                    retryAttempt = 0;
+                }
+
+                @Override
+                public void onAdDisplayed(MaxAd ad) {
+
+                }
+
+                @Override
+                public void onAdHidden(MaxAd ad) {
+                    interstitialAd.loadAd();
+                }
+
+                @Override
+                public void onAdClicked(MaxAd ad) {
+
+                }
+
+                @Override
+                public void onAdLoadFailed(String adUnitId, MaxError error) {
+                    retryAttempt++;
+                    long delayMillis = TimeUnit.SECONDS.toMillis((long) Math.pow(2, Math.min(6, retryAttempt)));
+
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            interstitialAd.loadAd();
+                        }
+                    }, delayMillis);
+                }
+
+                @Override
+                public void onAdDisplayFailed(MaxAd ad, MaxError error) {
+                    interstitialAd.loadAd();
+                }
+            });
+            interstitialAd.loadAd();
+        }
+    }
+
+    public void showMAXInterstitial(Callable<Void> callable) {
+        if (adsPrefernce.isNotification_fb()) {
+            if (interstitialAd.isReady()) {
+                try {
+                    interstitialAd.showAd();
+                    try {
+                        callable.call();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            } else {
+                try {
+                    callable.call();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        } else {
+            try {
+                callable.call();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+
+    }
 
 }
