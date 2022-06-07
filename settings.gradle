@@ -1,0 +1,3 @@
+rootProject.name = "VimalDholakiyaAds"
+include ':app'
+include ':newAds2021'
