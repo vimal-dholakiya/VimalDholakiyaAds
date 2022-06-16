@@ -6860,6 +6860,43 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
 
     }
 
+
+    public void showMAXAdapterNativeAd(FrameLayout view) {
+        if (adsPrefernce.isAds_fb()) {
+            view.setVisibility(View.VISIBLE);
+            nativeAdLoader = new MaxNativeAdLoader(adsPrefernce.adShortDesc_fb(), this);
+            nativeAdLoader.setNativeAdListener(new MaxNativeAdListener() {
+                @Override
+                public void onNativeAdLoaded(final MaxNativeAdView nativeAdView, final MaxAd ad) {
+                    // Clean up any pre-existing native ad to prevent memory leaks.
+                    if (nativeAd != null) {
+                        nativeAdLoader.destroy(nativeAd);
+                    }
+
+                    // Save ad for cleanup.
+                    nativeAd = ad;
+
+                    // Add ad view to view.
+                    view.removeAllViews();
+                    view.addView(nativeAdView);
+                }
+
+                @Override
+                public void onNativeAdLoadFailed(final String adUnitId, final MaxError error) {
+                    // We recommend retrying with exponentially higher delays up to a maximum delay
+                }
+
+                @Override
+                public void onNativeAdClicked(final MaxAd ad) {
+                    // Optional click callback
+                }
+            });
+
+            nativeAdLoader.loadAd();
+        }
+
+    }
+
     public void showMAXSmallNativeAd() {
         if (adsPrefernce.adShowCancel_fb()) {
             FrameLayout nativeAdContainer = findViewById(R.id.MAX_native_small_ad_layout);
