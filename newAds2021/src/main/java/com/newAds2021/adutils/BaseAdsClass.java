@@ -48,8 +48,11 @@ import com.applovin.mediation.MaxAd;
 import com.applovin.mediation.MaxAdListener;
 import com.applovin.mediation.MaxAdViewAdListener;
 import com.applovin.mediation.MaxError;
+import com.applovin.mediation.MaxReward;
+import com.applovin.mediation.MaxRewardedAdListener;
 import com.applovin.mediation.ads.MaxAdView;
 import com.applovin.mediation.ads.MaxInterstitialAd;
+import com.applovin.mediation.ads.MaxRewardedAd;
 import com.applovin.mediation.nativeAds.MaxNativeAdListener;
 import com.applovin.mediation.nativeAds.MaxNativeAdLoader;
 import com.applovin.mediation.nativeAds.MaxNativeAdView;
@@ -161,6 +164,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
     public MaxNativeAdLoader nativeAdLoader;
     public MaxAd nativeAd;
 
+    public MaxRewardedAd rewardedAd;
 
 
     @Override
@@ -460,7 +464,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
     }
 
 
-    public void showInhouseInterAd(Activity context,InhouseInterstitialListener inhouseInterstitialListener) {
+    public void showInhouseInterAd(Activity context, InhouseInterstitialListener inhouseInterstitialListener) {
         try {
             if (adsPrefernce.isInHouseAdLoaded()) {
                 // get Interstitial Data
@@ -1802,7 +1806,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
                         }
                     });
                 } else {
-                    showInhouseInterAd(context,new InhouseInterstitialListener() {
+                    showInhouseInterAd(context, new InhouseInterstitialListener() {
                         @Override
                         public void onAdShown() {
 
@@ -1836,11 +1840,10 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
     }
 
     public void showInterstitial1(Activity context, Callable<Void> params) {
-        if (currentAD % adsPrefernce.adCount() == 0 && isConnected(this) && adsPrefernce.showInter1())
-        {
+        if (currentAD % adsPrefernce.adCount() == 0 && isConnected(this) && adsPrefernce.showInter1()) {
             if (mInterstitialAd1 != null) {
                 if (adsPrefernce.showloading()) {
-                    withDelay(context,ConstantAds.AD_DELAY, ConstantAds.AD_MESSAGE, new Callable<Void>() {
+                    withDelay(context, ConstantAds.AD_DELAY, ConstantAds.AD_MESSAGE, new Callable<Void>() {
                         @Override
                         public Void call() throws Exception {
                             mInterstitialAd1.show((Activity) context);
@@ -1947,7 +1950,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
         if (currentAD % adsPrefernce.adCount() == 0 && isConnected(this) && adsPrefernce.showInter2()) {
             if (mInterstitialAd2 != null) {
                 if (adsPrefernce.showloading()) {
-                    withDelay(context,ConstantAds.AD_DELAY, ConstantAds.AD_MESSAGE, new Callable<Void>() {
+                    withDelay(context, ConstantAds.AD_DELAY, ConstantAds.AD_MESSAGE, new Callable<Void>() {
                         @Override
                         public Void call() throws Exception {
                             mInterstitialAd2.show((Activity) context);
@@ -2020,7 +2023,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
         if (currentAD % adsPrefernce.adCount() == 0 && isConnected(this) && adsPrefernce.showInter3()) {
             if (mInterstitialAd3 != null) {
                 if (adsPrefernce.showloading()) {
-                    withDelay(context,ConstantAds.AD_DELAY, ConstantAds.AD_MESSAGE, new Callable<Void>() {
+                    withDelay(context, ConstantAds.AD_DELAY, ConstantAds.AD_MESSAGE, new Callable<Void>() {
                         @Override
                         public Void call() throws Exception {
                             mInterstitialAd3.show((Activity) context);
@@ -2101,7 +2104,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
                 interstitialAd1.show();
                 interstitialAd1 = null;
             } else {
-                showInhouseInterAd(context,     new InhouseInterstitialListener() {
+                showInhouseInterAd(context, new InhouseInterstitialListener() {
                     @Override
                     public void onAdShown() {
 
@@ -2118,7 +2121,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
                 });
             }
         } else {
-            showInhouseInterAd(context,new InhouseInterstitialListener() {
+            showInhouseInterAd(context, new InhouseInterstitialListener() {
                 @Override
                 public void onAdShown() {
 
@@ -2140,7 +2143,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
     void showInterstitial1FBSplash(Activity context, Callable<Void> params) {
         if (isConnected(this)) {
             if (adsPrefernce.showInter1_fb()) {
-                if (interstitialAd1 == null){
+                if (interstitialAd1 == null) {
                     interstitialAd1 = new com.facebook.ads.InterstitialAd(this, adsPrefernce.gInter1_fb());
                     InterstitialAdListener interstitialAdListener = new InterstitialAdListener() {
                         @Override
@@ -2180,7 +2183,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
                                 interstitialAd1.show();
                                 interstitialAd1 = null;
                             } else {
-                                showInhouseInterAd(context,new InhouseInterstitialListener() {
+                                showInhouseInterAd(context, new InhouseInterstitialListener() {
                                     @Override
                                     public void onAdShown() {
 
@@ -2212,7 +2215,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
                             interstitialAd1.buildLoadAdConfig()
                                     .withAdListener(interstitialAdListener)
                                     .build());
-                }else {
+                } else {
                     if (interstitialAd1.isAdLoaded() && !interstitialAd1.isAdInvalidated()) {
                         try {
                             params.call();
@@ -2222,7 +2225,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
                         interstitialAd1.show();
                         interstitialAd1 = null;
                     } else {
-                        showInhouseInterAd(context,new InhouseInterstitialListener() {
+                        showInhouseInterAd(context, new InhouseInterstitialListener() {
                             @Override
                             public void onAdShown() {
 
@@ -2239,9 +2242,8 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
                         });
                     }
                 }
-            }
-            else {
-                showInhouseInterAd(context,new InhouseInterstitialListener() {
+            } else {
+                showInhouseInterAd(context, new InhouseInterstitialListener() {
                     @Override
                     public void onAdShown() {
 
@@ -2277,7 +2279,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
                 interstitialAd2.show();
                 interstitialAd2 = null;
             } else {
-                showInhouseInterAd(context,new InhouseInterstitialListener() {
+                showInhouseInterAd(context, new InhouseInterstitialListener() {
                     @Override
                     public void onAdShown() {
 
@@ -2313,7 +2315,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
                 interstitialAd3.show();
                 interstitialAd3 = null;
             } else {
-                showInhouseInterAd(context,new InhouseInterstitialListener() {
+                showInhouseInterAd(context, new InhouseInterstitialListener() {
                     @Override
                     public void onAdShown() {
 
@@ -2542,6 +2544,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
             });
         }
     }
+
     void showBanner2() {
         if (isConnected(this) && adsPrefernce.showBanner2()) {
             LinearLayout adContainer = (LinearLayout) this.findViewById(R.id.banner_adView);
@@ -2571,6 +2574,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
 
         }
     }
+
     void showBanner3() {
         if (isConnected(this) && adsPrefernce.showBanner3()) {
             LinearLayout adContainer = (LinearLayout) this.findViewById(R.id.banner_adView);
@@ -6286,7 +6290,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
 
                                 public void onAdFailedToShowFullScreenContent(AdError adError) {
                                     appOpenAd1 = null;
-                                    showInhouseInterAd(context,new InhouseInterstitialListener() {
+                                    showInhouseInterAd(context, new InhouseInterstitialListener() {
                                         @Override
                                         public void onAdShown() {
 
@@ -6421,7 +6425,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
             } else if (adsPrefernce.showInter1_fb()) {
                 showInterstitial1FB(context, callable);
             } else {
-                showInhouseInterAd(context,new InhouseInterstitialListener() {
+                showInhouseInterAd(context, new InhouseInterstitialListener() {
                     @Override
                     public void onAdShown() {
 
@@ -6465,7 +6469,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
 
                 public void onAdFailedToShowFullScreenContent(AdError adError) {
                     appOpenAd1 = null;
-                    showInhouseInterAd(context,new InhouseInterstitialListener() {
+                    showInhouseInterAd(context, new InhouseInterstitialListener() {
                         @Override
                         public void onAdShown() {
 
@@ -6579,7 +6583,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
         return com.google.android.gms.ads.AdSize.getPortraitAnchoredAdaptiveBannerAdSize(this, adWidth);
     }
 
-    public void hideStatusBar(){
+    public void hideStatusBar() {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
     }
@@ -7011,5 +7015,101 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
 
 
     }
+
+
+    public void loadMAXRewardedAds() {
+        if (adsPrefernce.notShowCancel_fb()) {
+            rewardedAd = MaxRewardedAd.getInstance(adsPrefernce.notDialogTitle_fb(), this);
+            rewardedAd.setListener(new MaxRewardedAdListener() {
+                @Override
+                public void onRewardedVideoStarted(MaxAd ad) {
+
+                }
+
+                @Override
+                public void onRewardedVideoCompleted(MaxAd ad) {
+
+                }
+
+                @Override
+                public void onUserRewarded(MaxAd ad, MaxReward reward) {
+
+
+                }
+
+                @Override
+                public void onAdLoaded(MaxAd ad) {
+                    retryAttempt = 0;
+                }
+
+                @Override
+                public void onAdDisplayed(MaxAd ad) {
+
+                }
+
+                @Override
+                public void onAdHidden(MaxAd ad) {
+                    rewardedAd.loadAd();
+                }
+
+                @Override
+                public void onAdClicked(MaxAd ad) {
+
+                }
+
+                @Override
+                public void onAdLoadFailed(String adUnitId, MaxError error) {
+                    retryAttempt++;
+                    long delayMillis = TimeUnit.SECONDS.toMillis((long) Math.pow(2, Math.min(6, retryAttempt)));
+
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            rewardedAd.loadAd();
+                        }
+                    }, delayMillis);
+                }
+
+                @Override
+                public void onAdDisplayFailed(MaxAd ad, MaxError error) {
+                    rewardedAd.loadAd();
+                }
+            });
+
+            rewardedAd.loadAd();
+        }
+    }
+
+    public void showMAXRewardedAds(Callable<Void> callable) {
+        if (adsPrefernce.notShowCancel_fb()) {
+        if (rewardedAd.isReady()) {
+            try {
+                rewardedAd.showAd();
+                try {
+                    callable.call();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else {
+            try {
+                callable.call();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        } else {
+            try {
+                callable.call();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+
+    }
+
 
 }

@@ -39,7 +39,8 @@ public class MainActivity extends BaseActivity {
             @Override
             public Void call() throws Exception {
 //                AppService("1.0");
-
+                    loadMAXRewardedAds();
+                    loadMAXInterstitial();
                 return null;
             }
         });
@@ -53,7 +54,12 @@ public class MainActivity extends BaseActivity {
     }
     public void Inter1(View view) {
        // loadAppOpen1();
-
+        showMAXInterstitial(new Callable<Void>() {
+            @Override
+            public Void call() throws Exception {
+                return null;
+            }
+        });
         showInterstitialAd(this, new Callable<Void>() {
             @Override
             public Void call() throws Exception {
@@ -89,6 +95,15 @@ public class MainActivity extends BaseActivity {
 
     public void showNative(View view) {
         showNativeAd();
+    }
+
+    public void MAXRevordAds(View view) {
+        showMAXRewardedAds(new Callable<Void>() {
+            @Override
+            public Void call() throws Exception {
+                return null;
+            }
+        });
     }
 
     public void AppOpen1(View view) {
