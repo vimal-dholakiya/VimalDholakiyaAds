@@ -567,7 +567,20 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
                             // open link
                             if (interAd.getOpenin().equals("playstore")) {
                                 startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(interAd.getApplink())));
-                            } else {
+                            }else if(interAd.getOpenin().equals("customtab")){
+                                try {
+                                    CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
+                                    CustomTabsIntent customTabsIntent = builder.build();
+                                    customTabsIntent.intent.setPackage("com.android.chrome");
+                                    customTabsIntent.launchUrl(context, Uri.parse(interAd.getApplink()));
+                                } catch (ActivityNotFoundException ex) {
+                                    // Chrome browser presumably not installed and open Kindle Browser
+                                    CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
+                                    CustomTabsIntent customTabsIntent = builder.build();
+                                    customTabsIntent.launchUrl(context, Uri.parse(interAd.getApplink()));
+                                }
+                            }
+                            else {
                                 Uri uri = Uri.parse(interAd.getApplink()); // missing 'http://' will cause crashed
                                 Intent intent = new Intent(Intent.ACTION_VIEW, uri);
                                 startActivity(intent);
@@ -710,7 +723,20 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
                             // open link
                             if (bannerAd.getOpenin().equals("playstore")) {
                                 startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(bannerAd.getApplink())));
-                            } else {
+                            }else if(bannerAd.getOpenin().equals("customtab")){
+                                try {
+                                    CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
+                                    CustomTabsIntent customTabsIntent = builder.build();
+                                    customTabsIntent.intent.setPackage("com.android.chrome");
+                                    customTabsIntent.launchUrl(view.getContext(), Uri.parse(bannerAd.getApplink()));
+                                } catch (ActivityNotFoundException ex) {
+                                    // Chrome browser presumably not installed and open Kindle Browser
+                                    CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
+                                    CustomTabsIntent customTabsIntent = builder.build();
+                                    customTabsIntent.launchUrl(view.getContext(), Uri.parse(bannerAd.getApplink()));
+                                }
+                            }
+                            else {
                                 Uri uri = Uri.parse(bannerAd.getApplink()); // missing 'http://' will cause crashed
                                 Intent intent = new Intent(Intent.ACTION_VIEW, uri);
                                 startActivity(intent);
@@ -827,7 +853,20 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
                         // open link
                         if (nativeAd.getOpenin().equals("playstore")) {
                             startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(nativeAd.getApplink())));
-                        } else {
+                        }else if(nativeAd.getOpenin().equals("customtab")){
+                            try {
+                                CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
+                                CustomTabsIntent customTabsIntent = builder.build();
+                                customTabsIntent.intent.setPackage("com.android.chrome");
+                                customTabsIntent.launchUrl(view.getContext(), Uri.parse(nativeAd.getApplink()));
+                            } catch (ActivityNotFoundException ex) {
+                                // Chrome browser presumably not installed and open Kindle Browser
+                                CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
+                                CustomTabsIntent customTabsIntent = builder.build();
+                                customTabsIntent.launchUrl(view.getContext(), Uri.parse(nativeAd.getApplink()));
+                            }
+                        }
+                        else {
                             Uri uri = Uri.parse(nativeAd.getApplink()); // missing 'http://' will cause crashed
                             Intent intent = new Intent(Intent.ACTION_VIEW, uri);
                             startActivity(intent);
@@ -6684,6 +6723,9 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
                     Dialog dialog = new Dialog(context);
                     dialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
                     dialog.setContentView(R.layout.qureka_ads_inter);
+                    int width = (int)(getResources().getDisplayMetrics().widthPixels*0.70);
+                    int height = (int)(getResources().getDisplayMetrics().heightPixels*0.70);
+                    dialog.getWindow().setLayout(width, height);
                     dialog.setCancelable(false);
 
                     ((LinearLayout) dialog.findViewById(R.id.ll_img)).setBackground(finalBgImage);
@@ -6763,6 +6805,21 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
             customTabsIntent.launchUrl(this, Uri.parse(adsPrefernce.adBannerUrl_fb()));
         }
     }
+
+    public void MyCusTomTab(String URL) {
+        try {
+            CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
+            CustomTabsIntent customTabsIntent = builder.build();
+            customTabsIntent.intent.setPackage("com.android.chrome");
+            customTabsIntent.launchUrl(this, Uri.parse(URL));
+        } catch (ActivityNotFoundException ex) {
+            // Chrome browser presumably not installed and open Kindle Browser
+            CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
+            CustomTabsIntent customTabsIntent = builder.build();
+            customTabsIntent.launchUrl(this, Uri.parse(URL));
+        }
+    }
+
 
     public void showMAXBanner() {
         if (adsPrefernce.isUpdate_fb()) {

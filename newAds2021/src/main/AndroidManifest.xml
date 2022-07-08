@@ -6,6 +6,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
+
     <permission android:name="android.permission.QUERY_ALL_PACKAGES" />
 
     <queries>
@@ -13,23 +14,20 @@
             <action android:name="android.intent.action.MAIN" />
         </intent>
     </queries>
-    <application
-        android:networkSecurityConfig="@xml/network_security_config">
+
+    <application android:networkSecurityConfig="@xml/network_security_config">
+
 
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
             android:value="@string/admob_app_id"/>
-
-        <meta-data android:name="com.google.android.gms.ads.flag.NATIVE_AD_DEBUGGER_ENABLED"
+        <meta-data
+            android:name="com.google.android.gms.ads.flag.NATIVE_AD_DEBUGGER_ENABLED"
             android:value="false" />
 
-<!--        <meta-data-->
-<!--            android:name="applovin.sdk.key"-->
-<!--            android:value="OoVicuSE_6dVkTnZ9kO67XO17hAqRXOdR5KToHkHP3P3SvSnBI8CUmuxbWFg0hHk8kXx2byHKiial9QUapI_ls"/>-->
-        <meta-data android:name="applovin.sdk.key"
-            android:value="56BixLJu7JipAZOR6fsb8-3CuZPqMDppVqN7Fsx47bzq_INaKNB-dMFchDib-gKD3v6XOzQaHEKRDJHPfznAvG"/>
+        <meta-data
+            android:name="applovin.sdk.key"
+            android:value="@string/applovin_sdk_key" />
     </application>
-
-
 
 </manifest>
