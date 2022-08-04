@@ -54,12 +54,13 @@ public class MainActivity extends BaseActivity {
     }
     public void Inter1(View view) {
        // loadAppOpen1();
-        showMAXInterstitial(new Callable<Void>() {
-            @Override
-            public Void call() throws Exception {
-                return null;
-            }
-        });
+//        showInterstitialAd(this, new Callable<Void>() {
+//            @Override
+//            public Void call() throws Exception {
+//                Toast.makeText(MainActivity.this, "Inter1Dismissed", Toast.LENGTH_SHORT).show();
+//                return null;
+//            }
+//        });
         showInterstitialAd(this, new Callable<Void>() {
             @Override
             public Void call() throws Exception {
@@ -70,10 +71,16 @@ public class MainActivity extends BaseActivity {
     }
 
     public void Inter2(View view) {
-        showInterstitial2(this, new Callable<Void>() {
+//        showInterstitial2(this, new Callable<Void>() {
+//            @Override
+//            public Void call() throws Exception {
+//                Toast.makeText(MainActivity.this, "Inter2Dismissed", Toast.LENGTH_SHORT).show();
+//                return null;
+//            }
+//        });
+        showMAXInterstitial(new Callable<Void>() {
             @Override
             public Void call() throws Exception {
-                Toast.makeText(MainActivity.this, "Inter2Dismissed", Toast.LENGTH_SHORT).show();
                 return null;
             }
         });
@@ -90,7 +97,7 @@ public class MainActivity extends BaseActivity {
     }
 
     public void showBanner(View view) {
-        showLargeBanner3();
+        showBannerAd();
     }
 
     public void showNative(View view) {

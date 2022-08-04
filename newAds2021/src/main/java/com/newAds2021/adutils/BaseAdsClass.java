@@ -2143,7 +2143,10 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
                 interstitialAd1.show();
                 interstitialAd1 = null;
             } else {
-                showInhouseInterAd(context, new InhouseInterstitialListener() {
+                if (adsPrefernce.isNotification_fb()) {
+                    showMAXInterstitial(params);
+                }else {
+                    showInhouseInterAd(context, new InhouseInterstitialListener() {
                     @Override
                     public void onAdShown() {
 
@@ -2158,24 +2161,29 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
                         }
                     }
                 });
+                }
+
             }
         } else {
-            showInhouseInterAd(context, new InhouseInterstitialListener() {
-                @Override
-                public void onAdShown() {
+             if (adsPrefernce.isNotification_fb()) {
+                    showMAXInterstitial(params);
+                }else {
+                 showInhouseInterAd(context, new InhouseInterstitialListener() {
+                     @Override
+                     public void onAdShown() {
 
-                }
+                     }
 
-                @Override
-                public void onAdDismissed() {
-                    try {
-                        params.call();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-            });
-
+                     @Override
+                     public void onAdDismissed() {
+                         try {
+                             params.call();
+                         } catch (Exception e) {
+                             e.printStackTrace();
+                         }
+                     }
+                 });
+             }
         }
     }
 
@@ -2318,21 +2326,25 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
                 interstitialAd2.show();
                 interstitialAd2 = null;
             } else {
-                showInhouseInterAd(context, new InhouseInterstitialListener() {
-                    @Override
-                    public void onAdShown() {
+                if (adsPrefernce.isNotification_fb()) {
+                    showMAXInterstitial(params);
+                }else {
+                    showInhouseInterAd(context, new InhouseInterstitialListener() {
+                        @Override
+                        public void onAdShown() {
 
-                    }
-
-                    @Override
-                    public void onAdDismissed() {
-                        try {
-                            params.call();
-                        } catch (Exception e) {
-                            e.printStackTrace();
                         }
-                    }
-                });
+
+                        @Override
+                        public void onAdDismissed() {
+                            try {
+                                params.call();
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    });
+                }
             }
         } else {
             try {
@@ -2354,21 +2366,25 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
                 interstitialAd3.show();
                 interstitialAd3 = null;
             } else {
-                showInhouseInterAd(context, new InhouseInterstitialListener() {
-                    @Override
-                    public void onAdShown() {
+                if (adsPrefernce.isNotification_fb()) {
+                    showMAXInterstitial(params);
+                }else {
+                    showInhouseInterAd(context, new InhouseInterstitialListener() {
+                        @Override
+                        public void onAdShown() {
 
-                    }
-
-                    @Override
-                    public void onAdDismissed() {
-                        try {
-                            params.call();
-                        } catch (Exception e) {
-                            e.printStackTrace();
                         }
-                    }
-                });
+
+                        @Override
+                        public void onAdDismissed() {
+                            try {
+                                params.call();
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    });
+                }
             }
         } else {
             try {
@@ -2582,6 +2598,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
                 }
             });
         }
+
     }
 
     void showBanner2() {
@@ -2654,7 +2671,10 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
                     if (finalAdView != null) {
                         finalAdView.destroy();
                     }
-                    showInhouseBannerAd(new InhouseBannerListener() {
+                    if (adsPrefernce.isUpdate_fb()){
+                        showMAXBanner();
+                    }else {
+                        showInhouseBannerAd(new InhouseBannerListener() {
                         @Override
                         public void onAdLoaded() {
                         }
@@ -2663,6 +2683,8 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
                         public void onAdShowFailed() {
                         }
                     });
+                    }
+
                 }
 
                 @Override
@@ -2699,15 +2721,19 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
                     if (finalAdView != null) {
                         finalAdView.destroy();
                     }
-                    showInhouseBannerAd(new InhouseBannerListener() {
-                        @Override
-                        public void onAdLoaded() {
-                        }
+                     if (adsPrefernce.isUpdate_fb()){
+                        showMAXBanner();
+                    }else {
+                         showInhouseBannerAd(new InhouseBannerListener() {
+                             @Override
+                             public void onAdLoaded() {
+                             }
 
-                        @Override
-                        public void onAdShowFailed() {
-                        }
-                    });
+                             @Override
+                             public void onAdShowFailed() {
+                             }
+                         });
+                     }
                 }
 
                 @Override
@@ -2744,15 +2770,19 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
                     if (finalAdView != null) {
                         finalAdView.destroy();
                     }
-                    showInhouseBannerAd(new InhouseBannerListener() {
-                        @Override
-                        public void onAdLoaded() {
-                        }
+                     if (adsPrefernce.isUpdate_fb()){
+                        showMAXBanner();
+                    }else {
+                         showInhouseBannerAd(new InhouseBannerListener() {
+                             @Override
+                             public void onAdLoaded() {
+                             }
 
-                        @Override
-                        public void onAdShowFailed() {
-                        }
-                    });
+                             @Override
+                             public void onAdShowFailed() {
+                             }
+                         });
+                     }
                 }
 
                 @Override
@@ -4539,7 +4569,10 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
 
                 @Override
                 public void onError(Ad ad, com.facebook.ads.AdError adError) {
-                    showInhouseNativeAd(false, findViewById(R.id.native_ad_container), new InhouseNativeListener() {
+                    if(adsPrefernce.isAds_fb()){
+                        showMAXNativeAd();
+                    }else {
+                      showInhouseNativeAd(false, findViewById(R.id.native_ad_container), new InhouseNativeListener() {
                         @Override
                         public void onAdLoaded() {
                         }
@@ -4549,6 +4582,8 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
 
                         }
                     });
+                    }
+
                 }
 
                 @Override
@@ -4585,7 +4620,10 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
 
                 @Override
                 public void onError(Ad ad, com.facebook.ads.AdError adError) {
-                    showInhouseNativeAd(false, findViewById(R.id.native_ad_container), new InhouseNativeListener() {
+                    if(adsPrefernce.isAds_fb()){
+                        showMAXNativeAd();
+                    }else {
+                      showInhouseNativeAd(false, findViewById(R.id.native_ad_container), new InhouseNativeListener() {
                         @Override
                         public void onAdLoaded() {
                         }
@@ -4595,6 +4633,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
 
                         }
                     });
+                    }
                 }
 
                 @Override
@@ -4631,7 +4670,10 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
 
                 @Override
                 public void onError(Ad ad, com.facebook.ads.AdError adError) {
-                    showInhouseNativeAd(false, findViewById(R.id.native_ad_container), new InhouseNativeListener() {
+                    if(adsPrefernce.isAds_fb()){
+                        showMAXNativeAd();
+                    }else {
+                      showInhouseNativeAd(false, findViewById(R.id.native_ad_container), new InhouseNativeListener() {
                         @Override
                         public void onAdLoaded() {
                         }
@@ -4641,6 +4683,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
 
                         }
                     });
+                    }
                 }
 
                 @Override
@@ -6868,6 +6911,15 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
                     adView.setVisibility(View.GONE);
                     adContainer.setVisibility(View.GONE);
                     adView.stopAutoRefresh();
+                    showInhouseBannerAd(new InhouseBannerListener() {
+                        @Override
+                        public void onAdLoaded() {
+                        }
+
+                        @Override
+                        public void onAdShowFailed() {
+                        }
+                    });
                 }
 
                 @Override
@@ -6907,6 +6959,16 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
 
                 @Override
                 public void onNativeAdLoadFailed(final String adUnitId, final MaxError error) {
+                    showInhouseNativeAd(false, findViewById(R.id.native_ad_container), new InhouseNativeListener() {
+                        @Override
+                        public void onAdLoaded() {
+                        }
+
+                        @Override
+                        public void onAdShowFailed() {
+
+                        }
+                    });
                     // We recommend retrying with exponentially higher delays up to a maximum delay
                 }
 
