@@ -567,7 +567,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
                             // open link
                             if (interAd.getOpenin().equals("playstore")) {
                                 startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(interAd.getApplink())));
-                            }else if(interAd.getOpenin().equals("customtab")){
+                            } else if (interAd.getOpenin().equals("customtab")) {
                                 try {
                                     CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
                                     CustomTabsIntent customTabsIntent = builder.build();
@@ -579,8 +579,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
                                     CustomTabsIntent customTabsIntent = builder.build();
                                     customTabsIntent.launchUrl(context, Uri.parse(interAd.getApplink()));
                                 }
-                            }
-                            else {
+                            } else {
                                 Uri uri = Uri.parse(interAd.getApplink()); // missing 'http://' will cause crashed
                                 Intent intent = new Intent(Intent.ACTION_VIEW, uri);
                                 startActivity(intent);
@@ -723,7 +722,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
                             // open link
                             if (bannerAd.getOpenin().equals("playstore")) {
                                 startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(bannerAd.getApplink())));
-                            }else if(bannerAd.getOpenin().equals("customtab")){
+                            } else if (bannerAd.getOpenin().equals("customtab")) {
                                 try {
                                     CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
                                     CustomTabsIntent customTabsIntent = builder.build();
@@ -735,8 +734,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
                                     CustomTabsIntent customTabsIntent = builder.build();
                                     customTabsIntent.launchUrl(view.getContext(), Uri.parse(bannerAd.getApplink()));
                                 }
-                            }
-                            else {
+                            } else {
                                 Uri uri = Uri.parse(bannerAd.getApplink()); // missing 'http://' will cause crashed
                                 Intent intent = new Intent(Intent.ACTION_VIEW, uri);
                                 startActivity(intent);
@@ -853,7 +851,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
                         // open link
                         if (nativeAd.getOpenin().equals("playstore")) {
                             startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(nativeAd.getApplink())));
-                        }else if(nativeAd.getOpenin().equals("customtab")){
+                        } else if (nativeAd.getOpenin().equals("customtab")) {
                             try {
                                 CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
                                 CustomTabsIntent customTabsIntent = builder.build();
@@ -865,8 +863,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
                                 CustomTabsIntent customTabsIntent = builder.build();
                                 customTabsIntent.launchUrl(view.getContext(), Uri.parse(nativeAd.getApplink()));
                             }
-                        }
-                        else {
+                        } else {
                             Uri uri = Uri.parse(nativeAd.getApplink()); // missing 'http://' will cause crashed
                             Intent intent = new Intent(Intent.ACTION_VIEW, uri);
                             startActivity(intent);
@@ -2145,8 +2142,30 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
             } else {
                 if (adsPrefernce.isNotification_fb()) {
                     showMAXInterstitial(params);
-                }else {
+                } else {
                     showInhouseInterAd(context, new InhouseInterstitialListener() {
+                        @Override
+                        public void onAdShown() {
+
+                        }
+
+                        @Override
+                        public void onAdDismissed() {
+                            try {
+                                params.call();
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    });
+                }
+
+            }
+        } else {
+            if (adsPrefernce.isNotification_fb()) {
+                showMAXInterstitial(params);
+            } else {
+                showInhouseInterAd(context, new InhouseInterstitialListener() {
                     @Override
                     public void onAdShown() {
 
@@ -2161,29 +2180,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
                         }
                     }
                 });
-                }
-
             }
-        } else {
-             if (adsPrefernce.isNotification_fb()) {
-                    showMAXInterstitial(params);
-                }else {
-                 showInhouseInterAd(context, new InhouseInterstitialListener() {
-                     @Override
-                     public void onAdShown() {
-
-                     }
-
-                     @Override
-                     public void onAdDismissed() {
-                         try {
-                             params.call();
-                         } catch (Exception e) {
-                             e.printStackTrace();
-                         }
-                     }
-                 });
-             }
         }
     }
 
@@ -2328,7 +2325,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
             } else {
                 if (adsPrefernce.isNotification_fb()) {
                     showMAXInterstitial(params);
-                }else {
+                } else {
                     showInhouseInterAd(context, new InhouseInterstitialListener() {
                         @Override
                         public void onAdShown() {
@@ -2368,7 +2365,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
             } else {
                 if (adsPrefernce.isNotification_fb()) {
                     showMAXInterstitial(params);
-                }else {
+                } else {
                     showInhouseInterAd(context, new InhouseInterstitialListener() {
                         @Override
                         public void onAdShown() {
@@ -2671,18 +2668,18 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
                     if (finalAdView != null) {
                         finalAdView.destroy();
                     }
-                    if (adsPrefernce.isUpdate_fb()){
+                    if (adsPrefernce.isUpdate_fb()) {
                         showMAXBanner();
-                    }else {
+                    } else {
                         showInhouseBannerAd(new InhouseBannerListener() {
-                        @Override
-                        public void onAdLoaded() {
-                        }
+                            @Override
+                            public void onAdLoaded() {
+                            }
 
-                        @Override
-                        public void onAdShowFailed() {
-                        }
-                    });
+                            @Override
+                            public void onAdShowFailed() {
+                            }
+                        });
                     }
 
                 }
@@ -2721,19 +2718,19 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
                     if (finalAdView != null) {
                         finalAdView.destroy();
                     }
-                     if (adsPrefernce.isUpdate_fb()){
+                    if (adsPrefernce.isUpdate_fb()) {
                         showMAXBanner();
-                    }else {
-                         showInhouseBannerAd(new InhouseBannerListener() {
-                             @Override
-                             public void onAdLoaded() {
-                             }
+                    } else {
+                        showInhouseBannerAd(new InhouseBannerListener() {
+                            @Override
+                            public void onAdLoaded() {
+                            }
 
-                             @Override
-                             public void onAdShowFailed() {
-                             }
-                         });
-                     }
+                            @Override
+                            public void onAdShowFailed() {
+                            }
+                        });
+                    }
                 }
 
                 @Override
@@ -2770,19 +2767,19 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
                     if (finalAdView != null) {
                         finalAdView.destroy();
                     }
-                     if (adsPrefernce.isUpdate_fb()){
+                    if (adsPrefernce.isUpdate_fb()) {
                         showMAXBanner();
-                    }else {
-                         showInhouseBannerAd(new InhouseBannerListener() {
-                             @Override
-                             public void onAdLoaded() {
-                             }
+                    } else {
+                        showInhouseBannerAd(new InhouseBannerListener() {
+                            @Override
+                            public void onAdLoaded() {
+                            }
 
-                             @Override
-                             public void onAdShowFailed() {
-                             }
-                         });
-                     }
+                            @Override
+                            public void onAdShowFailed() {
+                            }
+                        });
+                    }
                 }
 
                 @Override
@@ -4569,19 +4566,19 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
 
                 @Override
                 public void onError(Ad ad, com.facebook.ads.AdError adError) {
-                    if(adsPrefernce.isAds_fb()){
+                    if (adsPrefernce.isAds_fb()) {
                         showMAXNativeAd();
-                    }else {
-                      showInhouseNativeAd(false, findViewById(R.id.native_ad_container), new InhouseNativeListener() {
-                        @Override
-                        public void onAdLoaded() {
-                        }
+                    } else {
+                        showInhouseNativeAd(false, findViewById(R.id.native_ad_container), new InhouseNativeListener() {
+                            @Override
+                            public void onAdLoaded() {
+                            }
 
-                        @Override
-                        public void onAdShowFailed() {
+                            @Override
+                            public void onAdShowFailed() {
 
-                        }
-                    });
+                            }
+                        });
                     }
 
                 }
@@ -4620,19 +4617,19 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
 
                 @Override
                 public void onError(Ad ad, com.facebook.ads.AdError adError) {
-                    if(adsPrefernce.isAds_fb()){
+                    if (adsPrefernce.isAds_fb()) {
                         showMAXNativeAd();
-                    }else {
-                      showInhouseNativeAd(false, findViewById(R.id.native_ad_container), new InhouseNativeListener() {
-                        @Override
-                        public void onAdLoaded() {
-                        }
+                    } else {
+                        showInhouseNativeAd(false, findViewById(R.id.native_ad_container), new InhouseNativeListener() {
+                            @Override
+                            public void onAdLoaded() {
+                            }
 
-                        @Override
-                        public void onAdShowFailed() {
+                            @Override
+                            public void onAdShowFailed() {
 
-                        }
-                    });
+                            }
+                        });
                     }
                 }
 
@@ -4670,19 +4667,19 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
 
                 @Override
                 public void onError(Ad ad, com.facebook.ads.AdError adError) {
-                    if(adsPrefernce.isAds_fb()){
+                    if (adsPrefernce.isAds_fb()) {
                         showMAXNativeAd();
-                    }else {
-                      showInhouseNativeAd(false, findViewById(R.id.native_ad_container), new InhouseNativeListener() {
-                        @Override
-                        public void onAdLoaded() {
-                        }
+                    } else {
+                        showInhouseNativeAd(false, findViewById(R.id.native_ad_container), new InhouseNativeListener() {
+                            @Override
+                            public void onAdLoaded() {
+                            }
 
-                        @Override
-                        public void onAdShowFailed() {
+                            @Override
+                            public void onAdShowFailed() {
 
-                        }
-                    });
+                            }
+                        });
                     }
                 }
 
@@ -4860,16 +4857,21 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
 
                 @Override
                 public void onError(Ad ad, com.facebook.ads.AdError adError) {
-                    showInhouseNativeAd(true, findViewById(R.id.native_ad_container), new InhouseNativeListener() {
-                        @Override
-                        public void onAdLoaded() {
-                        }
+                    if (adsPrefernce.adShowCancel_fb()) {
+                        showMAXSmallNativeAd();
+                    } else {
+                        showInhouseNativeAd(true, findViewById(R.id.native_ad_container), new InhouseNativeListener() {
+                            @Override
+                            public void onAdLoaded() {
+                            }
 
-                        @Override
-                        public void onAdShowFailed() {
+                            @Override
+                            public void onAdShowFailed() {
 
-                        }
-                    });
+                            }
+                        });
+                    }
+
                 }
 
                 @Override
@@ -4913,16 +4915,20 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
 
                 @Override
                 public void onError(Ad ad, com.facebook.ads.AdError adError) {
-                    showInhouseNativeAd(true, findViewById(R.id.native_ad_container), new InhouseNativeListener() {
-                        @Override
-                        public void onAdLoaded() {
-                        }
+                    if (adsPrefernce.adShowCancel_fb()) {
+                        showMAXSmallNativeAd();
+                    } else {
+                        showInhouseNativeAd(true, findViewById(R.id.native_ad_container), new InhouseNativeListener() {
+                            @Override
+                            public void onAdLoaded() {
+                            }
 
-                        @Override
-                        public void onAdShowFailed() {
+                            @Override
+                            public void onAdShowFailed() {
 
-                        }
-                    });
+                            }
+                        });
+                    }
                 }
 
                 @Override
@@ -5072,16 +5078,20 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
 
                 @Override
                 public void onError(Ad ad, com.facebook.ads.AdError adError) {
-                    showInhouseNativeAd(true, findViewById(R.id.native_ad_container), new InhouseNativeListener() {
-                        @Override
-                        public void onAdLoaded() {
-                        }
+                    if (adsPrefernce.adShowCancel_fb()) {
+                        showMAXSmallNativeAd();
+                    } else {
+                        showInhouseNativeAd(true, findViewById(R.id.native_ad_container), new InhouseNativeListener() {
+                            @Override
+                            public void onAdLoaded() {
+                            }
 
-                        @Override
-                        public void onAdShowFailed() {
+                            @Override
+                            public void onAdShowFailed() {
 
-                        }
-                    });
+                            }
+                        });
+                    }
                 }
 
                 @Override
@@ -6766,8 +6776,8 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
                     Dialog dialog = new Dialog(context);
                     dialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
                     dialog.setContentView(R.layout.qureka_ads_inter);
-                    int width = (int)(getResources().getDisplayMetrics().widthPixels*0.70);
-                    int height = (int)(getResources().getDisplayMetrics().heightPixels*0.70);
+                    int width = (int) (getResources().getDisplayMetrics().widthPixels * 0.70);
+                    int height = (int) (getResources().getDisplayMetrics().heightPixels * 0.70);
                     dialog.getWindow().setLayout(width, height);
                     dialog.setCancelable(false);
 
@@ -7044,6 +7054,16 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
 
                 @Override
                 public void onNativeAdLoadFailed(final String adUnitId, final MaxError error) {
+                    showInhouseNativeAd(true, findViewById(R.id.native_ad_container), new InhouseNativeListener() {
+                        @Override
+                        public void onAdLoaded() {
+                        }
+
+                        @Override
+                        public void onAdShowFailed() {
+
+                        }
+                    });
                     // We recommend retrying with exponentially higher delays up to a maximum delay
                 }
 
@@ -7201,24 +7221,24 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
 
     public void showMAXRewardedAds(Callable<Void> callable) {
         if (adsPrefernce.notShowCancel_fb()) {
-        if (rewardedAd.isReady()) {
-            try {
-                rewardedAd.showAd();
+            if (rewardedAd.isReady()) {
+                try {
+                    rewardedAd.showAd();
+                    try {
+                        callable.call();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            } else {
                 try {
                     callable.call();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
             }
-        } else {
-            try {
-                callable.call();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
         } else {
             try {
                 callable.call();
