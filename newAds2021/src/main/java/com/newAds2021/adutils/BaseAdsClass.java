@@ -6969,6 +6969,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
 
                 @Override
                 public void onNativeAdLoadFailed(final String adUnitId, final MaxError error) {
+                    nativeAdContainer.setVisibility(View.GONE);
                     showInhouseNativeAd(false, findViewById(R.id.native_ad_container), new InhouseNativeListener() {
                         @Override
                         public void onAdLoaded() {
@@ -7054,6 +7055,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
 
                 @Override
                 public void onNativeAdLoadFailed(final String adUnitId, final MaxError error) {
+                    nativeAdContainer.setVisibility(View.GONE);
                     showInhouseNativeAd(true, findViewById(R.id.native_ad_container), new InhouseNativeListener() {
                         @Override
                         public void onAdLoaded() {

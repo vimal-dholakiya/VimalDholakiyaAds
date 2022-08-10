@@ -27,7 +27,7 @@
 
         <meta-data
             android:name="applovin.sdk.key"
-            android:value="@string/applovin_sdk_key" />
+            android:value="@string/applovin_sdk_key"/>
     </application>
 
 </manifest>

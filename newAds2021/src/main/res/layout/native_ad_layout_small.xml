@@ -21,4 +21,11 @@
         app:cardBackgroundColor="@android:color/white"
         app:cardCornerRadius="8dp" />
 
+    <FrameLayout
+        android:id="@+id/MAX_native_small_ad_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:background="@color/white"/>
+
 </RelativeLayout>

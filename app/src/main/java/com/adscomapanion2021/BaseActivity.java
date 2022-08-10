@@ -26,7 +26,7 @@ public class BaseActivity extends BaseAdsClass {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        ConstantAds.setAdsURL("1eZDGy9TOjpDOmtpx8JROK5PS6WN-BpL2TkYy9OdJ630");
+        ConstantAds.setAdsURL("1orVXZY3--yJEYowBV2yzoRHuEHJA8wEMNikibvWctD8");
         ConstantAds.preloadAppopen(true);
         ConstantAds.preloadInterstitial(true);
         ConstantAds.setNativeButtonBg(R.drawable.bg_btn_moreapps);

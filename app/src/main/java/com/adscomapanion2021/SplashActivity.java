@@ -65,7 +65,7 @@ public class SplashActivity extends BaseActivity {
 //                getBlogMoviesList();
                 startActivity(new Intent(SplashActivity.this,MainActivity.class));
             }
-        }, 5000);
+        }, 7000);
 
     }
 }

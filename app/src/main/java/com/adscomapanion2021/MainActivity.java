@@ -35,12 +35,14 @@ public class MainActivity extends BaseActivity {
         adsPrefernce = new AdsPrefernce(MainActivity.this);
         text = findViewById(R.id.text);
 //        getBlogMoviesList();
+//        loadMAXRewardedAds();
+        loadMAXInterstitial();
         withDelay(3000, new Callable<Void>() {
             @Override
             public Void call() throws Exception {
 //                AppService("1.0");
-                    loadMAXRewardedAds();
-                    loadMAXInterstitial();
+//                    loadMAXRewardedAds();
+//                    loadMAXInterstitial();
                 return null;
             }
         });
@@ -114,6 +116,7 @@ public class MainActivity extends BaseActivity {
     }
 
     public void AppOpen1(View view) {
+
 //        showAppOpen1(new Callable<Void>() {
 //            @Override
 //            public Void call() throws Exception {

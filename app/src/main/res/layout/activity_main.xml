@@ -70,6 +70,10 @@
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
         layout="@layout/native_ad_layout_small"/>
+    <include
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        layout="@layout/native_ad_layout"/>
 
     <TextView
         android:id="@+id/text"

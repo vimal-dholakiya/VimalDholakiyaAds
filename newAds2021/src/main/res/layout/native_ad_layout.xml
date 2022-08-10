@@ -20,4 +20,11 @@
         android:background="@android:color/white"
         app:cardBackgroundColor="@android:color/white"
         app:cardCornerRadius="8dp" />
+
+    <FrameLayout
+        android:id="@+id/MAX_native_ad_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="gone"/>
 </RelativeLayout>
