@@ -3559,17 +3559,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
 
                 @Override
                 public void onError(Ad ad, com.facebook.ads.AdError adError) {
-                    showInhouseNativeAd(false, cardView, new InhouseNativeListener() {
-                        @Override
-                        public void onAdLoaded() {
-                            nativeContainer.setVisibility(View.VISIBLE);
-                        }
-
-                        @Override
-                        public void onAdShowFailed() {
-                            nativeContainer.setVisibility(View.GONE);
-                        }
-                    });
+                    showMAXAdapterNativeAd(nativeView,cardView,nativeContainer);
                 }
 
                 @Override
@@ -3612,17 +3602,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
 
                 @Override
                 public void onError(Ad ad, com.facebook.ads.AdError adError) {
-                    showInhouseNativeAd(false, cardView, new InhouseNativeListener() {
-                        @Override
-                        public void onAdLoaded() {
-                            nativeContainer.setVisibility(View.VISIBLE);
-                        }
-
-                        @Override
-                        public void onAdShowFailed() {
-                            nativeContainer.setVisibility(View.GONE);
-                        }
-                    });
+                    showMAXAdapterNativeAd(nativeView,cardView,nativeContainer);
                 }
 
                 @Override
@@ -3665,17 +3645,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
 
                 @Override
                 public void onError(Ad ad, com.facebook.ads.AdError adError) {
-                    showInhouseNativeAd(false, cardView, new InhouseNativeListener() {
-                        @Override
-                        public void onAdLoaded() {
-                            nativeContainer.setVisibility(View.VISIBLE);
-                        }
-
-                        @Override
-                        public void onAdShowFailed() {
-                            nativeContainer.setVisibility(View.GONE);
-                        }
-                    });
+                    showMAXAdapterNativeAd(nativeView,cardView,nativeContainer);
                 }
 
                 @Override
@@ -3722,19 +3692,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
                 @Override
                 public void onError(Ad ad, com.facebook.ads.AdError adError) {
                     Log.e("showNativeBanner1", "onError");
-                    showInhouseNativeAd(true, cardView, new InhouseNativeListener() {
-                        @Override
-                        public void onAdLoaded() {
-                            Log.e("showNativeBanner1", "OnAdLoaded");
-                            nativeContainer.setVisibility(View.VISIBLE);
-                        }
-
-                        @Override
-                        public void onAdShowFailed() {
-                            Log.e("showNativeBanner1", "onAdShowFailed");
-                            nativeContainer.setVisibility(View.GONE);
-                        }
-                    });
+                   showMAXAdapterSmallNativeAd(nativeBannerView,cardView,nativeContainer);
                 }
 
                 @Override
@@ -3784,19 +3742,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
                 @Override
                 public void onError(Ad ad, com.facebook.ads.AdError adError) {
                     Log.e("showNativeBanner2", "onError");
-                    showInhouseNativeAd(true, cardView, new InhouseNativeListener() {
-                        @Override
-                        public void onAdLoaded() {
-                            Log.e("showNativeBanner2", "onAdLoaded");
-                            nativeContainer.setVisibility(View.VISIBLE);
-                        }
-
-                        @Override
-                        public void onAdShowFailed() {
-                            Log.e("showNativeBanner2", "onAdShowFailed");
-                            nativeContainer.setVisibility(View.GONE);
-                        }
-                    });
+                    showMAXAdapterSmallNativeAd(nativeBannerView,cardView,nativeContainer);
                 }
 
                 @Override
@@ -3846,19 +3792,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
                 @Override
                 public void onError(Ad ad, com.facebook.ads.AdError adError) {
                     Log.e("showNativeBanner3", "onError");
-                    showInhouseNativeAd(true, cardView, new InhouseNativeListener() {
-                        @Override
-                        public void onAdLoaded() {
-                            Log.e("showNativeBanner3", "onAdLoaded");
-                            nativeContainer.setVisibility(View.VISIBLE);
-                        }
-
-                        @Override
-                        public void onAdShowFailed() {
-                            Log.e("showNativeBanner3", "onAdShowFailed");
-                            nativeContainer.setVisibility(View.GONE);
-                        }
-                    });
+                    showMAXAdapterSmallNativeAd(nativeBannerView,cardView,nativeContainer);
                 }
 
                 @Override
@@ -6877,7 +6811,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
     public void showMAXBanner() {
         if (adsPrefernce.isUpdate_fb()) {
             LinearLayout adContainer = (LinearLayout) this.findViewById(R.id.banner_adView);
-            adContainer.setVisibility(View.GONE);
+//            adContainer.setVisibility(View.GONE);
             MaxAdView adView = new MaxAdView(adsPrefernce.adDialogTitle_fb(), this);
             int width = ViewGroup.LayoutParams.MATCH_PARENT;
             int heightPx = getResources().getDimensionPixelSize(R.dimen.banner_height);
@@ -6895,6 +6829,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
 
                 @Override
                 public void onAdLoaded(MaxAd maxAd) {
+                    hideInhouseBanner();
                     adView.setVisibility(View.VISIBLE);
                     adContainer.setVisibility(View.VISIBLE);
                     adView.startAutoRefresh();
@@ -6995,7 +6930,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
     }
 
 
-    public void showMAXAdapterNativeAd(FrameLayout view) {
+    public void showMAXAdapterNativeAd(RelativeLayout view,CardView cardView,View nativeContainer) {
         if (adsPrefernce.isAds_fb()) {
             view.setVisibility(View.VISIBLE);
             nativeAdLoader = new MaxNativeAdLoader(adsPrefernce.adShortDesc_fb(), this);
@@ -7018,6 +6953,17 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
                 @Override
                 public void onNativeAdLoadFailed(final String adUnitId, final MaxError error) {
                     // We recommend retrying with exponentially higher delays up to a maximum delay
+                    showInhouseNativeAd(false, cardView, new InhouseNativeListener() {
+                        @Override
+                        public void onAdLoaded() {
+                            nativeContainer.setVisibility(View.VISIBLE);
+                        }
+
+                        @Override
+                        public void onAdShowFailed() {
+                            nativeContainer.setVisibility(View.GONE);
+                        }
+                    });
                 }
 
                 @Override
@@ -7027,9 +6973,86 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
             });
 
             nativeAdLoader.loadAd();
+        }else {
+             showInhouseNativeAd(false, cardView, new InhouseNativeListener() {
+                        @Override
+                        public void onAdLoaded() {
+                            nativeContainer.setVisibility(View.VISIBLE);
+                        }
+
+                        @Override
+                        public void onAdShowFailed() {
+                            nativeContainer.setVisibility(View.GONE);
+                        }
+                    });
         }
 
     }
+
+    public void showMAXAdapterSmallNativeAd(RelativeLayout view,CardView cardView,View nativeContainer) {
+        if (adsPrefernce.adShowCancel_fb()) {
+            view.setVisibility(View.VISIBLE);
+            nativeAdLoader = new MaxNativeAdLoader(adsPrefernce.adMessage_fb(), this);
+            nativeAdLoader.setNativeAdListener(new MaxNativeAdListener() {
+                @Override
+                public void onNativeAdLoaded(final MaxNativeAdView nativeAdView, final MaxAd ad) {
+                    // Clean up any pre-existing native ad to prevent memory leaks.
+                    if (nativeAd != null) {
+                        nativeAdLoader.destroy(nativeAd);
+                    }
+
+                    // Save ad for cleanup.
+                    nativeAd = ad;
+
+                    // Add ad view to view.
+                    view.removeAllViews();
+                    view.addView(nativeAdView);
+                }
+
+                @Override
+                public void onNativeAdLoadFailed(final String adUnitId, final MaxError error) {
+                    view.setVisibility(View.GONE);
+                    showInhouseNativeAd(true, cardView, new InhouseNativeListener() {
+                        @Override
+                        public void onAdLoaded() {
+                            Log.e("showNativeBanner1", "OnAdLoaded");
+                            nativeContainer.setVisibility(View.VISIBLE);
+                        }
+
+                        @Override
+                        public void onAdShowFailed() {
+                            Log.e("showNativeBanner1", "onAdShowFailed");
+                            nativeContainer.setVisibility(View.GONE);
+                        }
+                    });
+                    // We recommend retrying with exponentially higher delays up to a maximum delay
+                }
+
+                @Override
+                public void onNativeAdClicked(final MaxAd ad) {
+                    // Optional click callback
+                }
+            });
+
+            nativeAdLoader.loadAd();
+        }else {
+            showInhouseNativeAd(true, cardView, new InhouseNativeListener() {
+                @Override
+                public void onAdLoaded() {
+                    Log.e("showNativeBanner1", "OnAdLoaded");
+                    nativeContainer.setVisibility(View.VISIBLE);
+                }
+
+                @Override
+                public void onAdShowFailed() {
+                    Log.e("showNativeBanner1", "onAdShowFailed");
+                    nativeContainer.setVisibility(View.GONE);
+                }
+            });
+        }
+
+    }
+
 
     public void showMAXSmallNativeAd() {
         if (adsPrefernce.adShowCancel_fb()) {
