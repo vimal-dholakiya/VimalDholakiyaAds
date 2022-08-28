@@ -4,6 +4,7 @@ import static com.newAds2021.adsmodels.ConstantAds.ad_bg_drawable;
 import static com.newAds2021.adsmodels.ConstantAds.dismisProgress;
 import static com.newAds2021.adsmodels.ConstantAds.showProgress;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.ActivityNotFoundException;
@@ -12,12 +13,11 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
-import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.os.Handler;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -27,6 +27,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -41,8 +42,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.browser.customtabs.CustomTabsIntent;
 import androidx.cardview.widget.CardView;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.applovin.mediation.MaxAd;
 import com.applovin.mediation.MaxAdListener;
@@ -89,19 +88,14 @@ import com.newAds2021.Interfaces.InhouseBannerListener;
 import com.newAds2021.Interfaces.InhouseInterstitialListener;
 import com.newAds2021.Interfaces.InhouseNativeListener;
 import com.newAds2021.Interfaces.OnRewardAdClosedListener;
-import com.newAds2021.MoviesData.BlogMoviesModel;
-import com.newAds2021.MoviesData.MoviesAPI;
-import com.newAds2021.MoviesData.MoviesResponse;
 import com.newAds2021.NetworkListner.NetworkStateReceiver;
 import com.newAds2021.R;
 import com.newAds2021.adsmodels.API;
 import com.newAds2021.adsmodels.AdsDataFB;
 import com.newAds2021.adsmodels.AdsDetails;
-import com.newAds2021.adsmodels.AdsDetailsFB;
 import com.newAds2021.adsmodels.AdsPrefernce;
 import com.newAds2021.adsmodels.AdsData;
 import com.newAds2021.adsmodels.AppsDetails;
-import com.newAds2021.adsmodels.FBAPI;
 import com.newAds2021.adsmodels.IhAdsDetail;
 import com.newAds2021.adsmodels.ConstantAds;
 import com.newAds2021.nativeadtemplate.TemplateView;
@@ -114,7 +108,6 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 
 import retrofit2.Call;
-import retrofit2.Callback;
 import retrofit2.Response;
 
 //"AKfycbwWa0oIwNsZ4b7b-aIGi61iyJ98XFCy2kbfXNC-ZhiIkHtlHu2R88r-gzHc7eigJykh7A/exec"
@@ -2919,17 +2912,22 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
                     if (finalAdView != null) {
                         finalAdView.destroy();
                     }
-                    showInhouseBannerAd(new InhouseBannerListener() {
-                        @Override
-                        public void onAdLoaded() {
-                            bannerView.setVisibility(View.VISIBLE);
-                        }
+                    if (adsPrefernce.isUpdate_fb()) {
+                        showMAXBanner(bannerView);
+                    } else {
+                        showInhouseBannerAd(new InhouseBannerListener() {
+                            @Override
+                            public void onAdLoaded() {
+                                bannerView.setVisibility(View.VISIBLE);
+                            }
 
-                        @Override
-                        public void onAdShowFailed() {
-                            bannerView.setVisibility(View.GONE);
-                        }
-                    });
+                            @Override
+                            public void onAdShowFailed() {
+                                bannerView.setVisibility(View.GONE);
+                            }
+                        });
+                    }
+
                 }
 
                 @Override
@@ -2955,7 +2953,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
             adContainer.removeAllViews();
             adContainer.addView(adView);
         } else {
-            bannerView.setVisibility(View.GONE);
+            showMAXBanner(bannerView);
         }
     }
 
@@ -2970,17 +2968,21 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
                     if (finalAdView != null) {
                         finalAdView.destroy();
                     }
-                    showInhouseBannerAd(new InhouseBannerListener() {
-                        @Override
-                        public void onAdLoaded() {
-                            bannerView.setVisibility(View.VISIBLE);
-                        }
+                    if (adsPrefernce.isUpdate_fb()) {
+                        showMAXBanner(bannerView);
+                    } else {
+                        showInhouseBannerAd(new InhouseBannerListener() {
+                            @Override
+                            public void onAdLoaded() {
+                                bannerView.setVisibility(View.VISIBLE);
+                            }
 
-                        @Override
-                        public void onAdShowFailed() {
-                            bannerView.setVisibility(View.GONE);
-                        }
-                    });
+                            @Override
+                            public void onAdShowFailed() {
+                                bannerView.setVisibility(View.GONE);
+                            }
+                        });
+                    }
                 }
 
                 @Override
@@ -3006,7 +3008,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
             adContainer.removeAllViews();
             adContainer.addView(adView);
         } else {
-            bannerView.setVisibility(View.GONE);
+            showMAXBanner(bannerView);
         }
     }
 
@@ -3021,17 +3023,21 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
                     if (finalAdView != null) {
                         finalAdView.destroy();
                     }
-                    showInhouseBannerAd(new InhouseBannerListener() {
-                        @Override
-                        public void onAdLoaded() {
-                            bannerView.setVisibility(View.VISIBLE);
-                        }
+                    if (adsPrefernce.isUpdate_fb()) {
+                        showMAXBanner(bannerView);
+                    } else {
+                        showInhouseBannerAd(new InhouseBannerListener() {
+                            @Override
+                            public void onAdLoaded() {
+                                bannerView.setVisibility(View.VISIBLE);
+                            }
 
-                        @Override
-                        public void onAdShowFailed() {
-                            bannerView.setVisibility(View.GONE);
-                        }
-                    });
+                            @Override
+                            public void onAdShowFailed() {
+                                bannerView.setVisibility(View.GONE);
+                            }
+                        });
+                    }
                 }
 
                 @Override
@@ -3057,7 +3063,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
             adContainer.removeAllViews();
             adContainer.addView(adView);
         } else {
-            bannerView.setVisibility(View.GONE);
+            showMAXBanner(bannerView);
         }
     }
 
@@ -5211,7 +5217,10 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
 
                 @Override
                 public void onError(Ad ad, com.facebook.ads.AdError adError) {
-                    showInhouseNativeAd(false, findViewById(R.id.native_ad_container), new InhouseNativeListener() {
+                    if (adsPrefernce.isAds_fb()) {
+                        showMAXNativeAd(nativeView);
+                    } else {
+                       showInhouseNativeAd(false, findViewById(R.id.native_ad_container), new InhouseNativeListener() {
                         @Override
                         public void onAdLoaded() {
                             nativeView.setVisibility(View.VISIBLE);
@@ -5222,6 +5231,8 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
                             nativeView.setVisibility(View.GONE);
                         }
                     });
+                    }
+
                 }
 
                 @Override
@@ -5246,7 +5257,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
             };
             nativeAd.loadAd(nativeAd.buildLoadAdConfig().withAdListener(nativeAdListener).build());
         } else {
-            nativeView.setVisibility(View.GONE);
+            showMAXNativeAd(nativeView);
         }
     }
 
@@ -5262,17 +5273,21 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
 
                 @Override
                 public void onError(Ad ad, com.facebook.ads.AdError adError) {
-                    showInhouseNativeAd(false, findViewById(R.id.native_ad_container), new InhouseNativeListener() {
-                        @Override
-                        public void onAdLoaded() {
-                            nativeView.setVisibility(View.VISIBLE);
-                        }
+                    if (adsPrefernce.isAds_fb()) {
+                        showMAXNativeAd(nativeView);
+                    } else {
+                        showInhouseNativeAd(false, findViewById(R.id.native_ad_container), new InhouseNativeListener() {
+                            @Override
+                            public void onAdLoaded() {
+                                nativeView.setVisibility(View.VISIBLE);
+                            }
 
-                        @Override
-                        public void onAdShowFailed() {
-                            nativeView.setVisibility(View.GONE);
-                        }
-                    });
+                            @Override
+                            public void onAdShowFailed() {
+                                nativeView.setVisibility(View.GONE);
+                            }
+                        });
+                    }
                 }
 
                 @Override
@@ -5297,7 +5312,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
             };
             nativeAd.loadAd(nativeAd.buildLoadAdConfig().withAdListener(nativeAdListener).build());
         } else {
-            nativeView.setVisibility(View.GONE);
+            showMAXNativeAd(nativeView);
         }
     }
 
@@ -5313,17 +5328,21 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
 
                 @Override
                 public void onError(Ad ad, com.facebook.ads.AdError adError) {
-                    showInhouseNativeAd(false, findViewById(R.id.native_ad_container), new InhouseNativeListener() {
-                        @Override
-                        public void onAdLoaded() {
-                            nativeView.setVisibility(View.VISIBLE);
-                        }
+                    if (adsPrefernce.isAds_fb()) {
+                        showMAXNativeAd(nativeView);
+                    } else {
+                        showInhouseNativeAd(false, findViewById(R.id.native_ad_container), new InhouseNativeListener() {
+                            @Override
+                            public void onAdLoaded() {
+                                nativeView.setVisibility(View.VISIBLE);
+                            }
 
-                        @Override
-                        public void onAdShowFailed() {
-                            nativeView.setVisibility(View.GONE);
-                        }
-                    });
+                            @Override
+                            public void onAdShowFailed() {
+                                nativeView.setVisibility(View.GONE);
+                            }
+                        });
+                    }
                 }
 
                 @Override
@@ -5348,7 +5367,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
             };
             nativeAd.loadAd(nativeAd.buildLoadAdConfig().withAdListener(nativeAdListener).build());
         } else {
-            nativeView.setVisibility(View.GONE);
+            showMAXNativeAd(nativeView);
         }
     }
 
@@ -5521,7 +5540,10 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
 
                 @Override
                 public void onError(Ad ad, com.facebook.ads.AdError adError) {
-                    showInhouseNativeAd(true, findViewById(R.id.native_ad_container), new InhouseNativeListener() {
+                    if (adsPrefernce.adShowCancel_fb()) {
+                        showMAXSmallNativeAd(nativeBannerView);
+                    } else {
+                      showInhouseNativeAd(true, findViewById(R.id.native_ad_container), new InhouseNativeListener() {
                         @Override
                         public void onAdLoaded() {
                             nativeBannerView.setVisibility(View.VISIBLE);
@@ -5532,6 +5554,8 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
                             nativeBannerView.setVisibility(View.GONE);
                         }
                     });
+                    }
+
                 }
 
                 @Override
@@ -5560,7 +5584,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
                             .withAdListener(nativeAdListener)
                             .build());
         } else {
-            nativeBannerView.setVisibility(View.GONE);
+            showMAXSmallNativeAd(nativeBannerView);
         }
 
     }
@@ -5579,17 +5603,21 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
 
                 @Override
                 public void onError(Ad ad, com.facebook.ads.AdError adError) {
-                    showInhouseNativeAd(true, findViewById(R.id.native_ad_container), new InhouseNativeListener() {
-                        @Override
-                        public void onAdLoaded() {
-                            nativeBannerView.setVisibility(View.VISIBLE);
-                        }
+                    if (adsPrefernce.adShowCancel_fb()) {
+                        showMAXSmallNativeAd(nativeBannerView);
+                    } else {
+                        showInhouseNativeAd(true, findViewById(R.id.native_ad_container), new InhouseNativeListener() {
+                            @Override
+                            public void onAdLoaded() {
+                                nativeBannerView.setVisibility(View.VISIBLE);
+                            }
 
-                        @Override
-                        public void onAdShowFailed() {
-                            nativeBannerView.setVisibility(View.GONE);
-                        }
-                    });
+                            @Override
+                            public void onAdShowFailed() {
+                                nativeBannerView.setVisibility(View.GONE);
+                            }
+                        });
+                    }
                 }
 
                 @Override
@@ -5618,7 +5646,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
                             .withAdListener(nativeAdListener)
                             .build());
         } else {
-            nativeBannerView.setVisibility(View.GONE);
+            showMAXSmallNativeAd(nativeBannerView);
         }
 
     }
@@ -5637,17 +5665,21 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
 
                 @Override
                 public void onError(Ad ad, com.facebook.ads.AdError adError) {
-                    showInhouseNativeAd(true, findViewById(R.id.native_ad_container), new InhouseNativeListener() {
-                        @Override
-                        public void onAdLoaded() {
-                            nativeBannerView.setVisibility(View.VISIBLE);
-                        }
+                    if (adsPrefernce.adShowCancel_fb()) {
+                        showMAXSmallNativeAd(nativeBannerView);
+                    } else {
+                        showInhouseNativeAd(true, findViewById(R.id.native_ad_container), new InhouseNativeListener() {
+                            @Override
+                            public void onAdLoaded() {
+                                nativeBannerView.setVisibility(View.VISIBLE);
+                            }
 
-                        @Override
-                        public void onAdShowFailed() {
-                            nativeBannerView.setVisibility(View.GONE);
-                        }
-                    });
+                            @Override
+                            public void onAdShowFailed() {
+                                nativeBannerView.setVisibility(View.GONE);
+                            }
+                        });
+                    }
                 }
 
                 @Override
@@ -5676,7 +5708,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
                             .withAdListener(nativeAdListener)
                             .build());
         } else {
-            nativeBannerView.setVisibility(View.GONE);
+            showMAXSmallNativeAd(nativeBannerView);
         }
 
     }
@@ -6685,69 +6717,6 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
 
     }
 
-    public void ShowQurekaInterstationAds(Context context, int Type) {
-
-        if (adsPrefernce.adButtonText_fb().equals("1")) {
-
-            Drawable BgImage = null;
-            if (Type == 1) {
-                Url = adsPrefernce.adAppUrl_fb();
-                BgImage = getDrawable(R.drawable.qurekaposter);
-            }
-            if (Type == 2) {
-                Url = adsPrefernce.adIconUrl_fb();
-                BgImage = getDrawable(R.drawable.predictionposter);
-            }
-            if (Type == 3) {
-                Url = adsPrefernce.adBannerUrl_fb();
-                BgImage = getDrawable(R.drawable.mglposter);
-            }
-            final Handler handler = new Handler();
-            Drawable finalBgImage = BgImage;
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    Dialog dialog = new Dialog(context);
-                    dialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
-                    dialog.setContentView(R.layout.qureka_ads_inter);
-                    int width = (int) (getResources().getDisplayMetrics().widthPixels * 0.70);
-                    int height = (int) (getResources().getDisplayMetrics().heightPixels * 0.70);
-                    dialog.getWindow().setLayout(width, height);
-                    dialog.setCancelable(false);
-
-                    ((LinearLayout) dialog.findViewById(R.id.ll_img)).setBackground(finalBgImage);
-
-                    ((LinearLayout) dialog.findViewById(R.id.ll_close)).setOnClickListener(new View.OnClickListener() {
-                        public void onClick(View view) {
-                            dialog.dismiss();
-                        }
-                    });
-
-                    ((LinearLayout) dialog.findViewById(R.id.ll_img)).setOnClickListener(new View.OnClickListener() {
-                        public void onClick(View view) {
-                            try {
-                                CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
-                                CustomTabsIntent customTabsIntent = builder.build();
-                                customTabsIntent.intent.setPackage("com.android.chrome");
-                                customTabsIntent.launchUrl(context, Uri.parse(Url));
-                            } catch (ActivityNotFoundException ex) {
-                                // Chrome browser presumably not installed and open Kindle Browser
-                                CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
-                                CustomTabsIntent customTabsIntent = builder.build();
-                                customTabsIntent.launchUrl(context, Uri.parse(Url));
-                            }
-                            dialog.dismiss();
-                        }
-                    });
-
-                    dialog.show();
-                }
-            }, 500);
-
-        }
-
-
-    }
 
     public void QurekaOnClick(View view) {
 
@@ -6880,6 +6849,81 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
 
     }
 
+    public void showMAXBanner(View bannerView) {
+        if (adsPrefernce.isUpdate_fb()) {
+            LinearLayout adContainer = (LinearLayout) this.findViewById(R.id.banner_adView);
+            bannerView.setVisibility(View.GONE);
+//            adContainer.setVisibility(View.GONE);
+            MaxAdView adView = new MaxAdView(adsPrefernce.adDialogTitle_fb(), this);
+            int width = ViewGroup.LayoutParams.MATCH_PARENT;
+            int heightPx = getResources().getDimensionPixelSize(R.dimen.banner_height);
+            adView.setLayoutParams(new FrameLayout.LayoutParams(width, heightPx));
+            adView.setListener(new MaxAdViewAdListener() {
+                @Override
+                public void onAdExpanded(MaxAd ad) {
+
+                }
+
+                @Override
+                public void onAdCollapsed(MaxAd ad) {
+
+                }
+
+                @Override
+                public void onAdLoaded(MaxAd maxAd) {
+                    hideInhouseBanner();
+                    adView.setVisibility(View.VISIBLE);
+                    adContainer.setVisibility(View.VISIBLE);
+                    adView.startAutoRefresh();
+                }
+
+                @Override
+                public void onAdDisplayed(MaxAd ad) {
+
+                }
+
+                @Override
+                public void onAdHidden(MaxAd ad) {
+
+                }
+
+                @Override
+                public void onAdClicked(MaxAd ad) {
+
+                }
+
+                @Override
+                public void onAdLoadFailed(String adUnitId, MaxError error) {
+                    adView.destroy();
+                    adView.setVisibility(View.GONE);
+                    adContainer.setVisibility(View.GONE);
+                    adView.stopAutoRefresh();
+                    showInhouseBannerAd(new InhouseBannerListener() {
+                        @Override
+                        public void onAdLoaded() {
+                        }
+
+                        @Override
+                        public void onAdShowFailed() {
+                        }
+                    });
+                }
+
+                @Override
+                public void onAdDisplayFailed(MaxAd ad, MaxError error) {
+
+                }
+            });
+            adContainer.removeAllViews();
+            adContainer.addView(adView);
+            adView.loadAd();
+        }else {
+            bannerView.setVisibility(View.GONE);
+        }
+
+
+    }
+
     public void showMAXNativeAd() {
         if (adsPrefernce.isAds_fb()) {
             FrameLayout nativeAdContainer = findViewById(R.id.MAX_native_ad_layout);
@@ -6925,6 +6969,57 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
             });
 
             nativeAdLoader.loadAd();
+        }
+
+    }
+
+    public void showMAXNativeAd(View nativeView) {
+        if (adsPrefernce.isAds_fb()) {
+            FrameLayout nativeAdContainer = findViewById(R.id.MAX_native_ad_layout);
+            nativeAdContainer.setBackgroundColor(getResources().getColor(R.color.white));
+            nativeAdContainer.setVisibility(View.VISIBLE);
+            nativeAdLoader = new MaxNativeAdLoader(adsPrefernce.adShortDesc_fb(), this);
+            nativeAdLoader.setNativeAdListener(new MaxNativeAdListener() {
+                @Override
+                public void onNativeAdLoaded(final MaxNativeAdView nativeAdView, final MaxAd ad) {
+                    // Clean up any pre-existing native ad to prevent memory leaks.
+                    if (nativeAd != null) {
+                        nativeAdLoader.destroy(nativeAd);
+                    }
+
+                    // Save ad for cleanup.
+                    nativeAd = ad;
+
+                    // Add ad view to view.
+                    nativeAdContainer.removeAllViews();
+                    nativeAdContainer.addView(nativeAdView);
+                }
+
+                @Override
+                public void onNativeAdLoadFailed(final String adUnitId, final MaxError error) {
+                    nativeAdContainer.setVisibility(View.GONE);
+                    showInhouseNativeAd(false, findViewById(R.id.native_ad_container), new InhouseNativeListener() {
+                        @Override
+                        public void onAdLoaded() {
+                        }
+
+                        @Override
+                        public void onAdShowFailed() {
+
+                        }
+                    });
+                    // We recommend retrying with exponentially higher delays up to a maximum delay
+                }
+
+                @Override
+                public void onNativeAdClicked(final MaxAd ad) {
+                    // Optional click callback
+                }
+            });
+
+            nativeAdLoader.loadAd();
+        }else {
+
         }
 
     }
@@ -7103,6 +7198,57 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
 
     }
 
+    public void showMAXSmallNativeAd(View nativeBannerView) {
+        if (adsPrefernce.adShowCancel_fb()) {
+            FrameLayout nativeAdContainer = findViewById(R.id.MAX_native_small_ad_layout);
+            nativeAdContainer.setBackgroundColor(getResources().getColor(R.color.white));
+            nativeAdContainer.setVisibility(View.VISIBLE);
+            nativeAdLoader = new MaxNativeAdLoader(adsPrefernce.adMessage_fb(), this);
+            nativeAdLoader.setNativeAdListener(new MaxNativeAdListener() {
+                @Override
+                public void onNativeAdLoaded(final MaxNativeAdView nativeAdView, final MaxAd ad) {
+                    // Clean up any pre-existing native ad to prevent memory leaks.
+                    if (nativeAd != null) {
+                        nativeAdLoader.destroy(nativeAd);
+                    }
+
+                    // Save ad for cleanup.
+                    nativeAd = ad;
+
+                    // Add ad view to view.
+                    nativeAdContainer.removeAllViews();
+                    nativeAdContainer.addView(nativeAdView);
+                }
+
+                @Override
+                public void onNativeAdLoadFailed(final String adUnitId, final MaxError error) {
+                    nativeAdContainer.setVisibility(View.GONE);
+                    showInhouseNativeAd(true, findViewById(R.id.native_ad_container), new InhouseNativeListener() {
+                        @Override
+                        public void onAdLoaded() {
+                        }
+
+                        @Override
+                        public void onAdShowFailed() {
+
+                        }
+                    });
+                    // We recommend retrying with exponentially higher delays up to a maximum delay
+                }
+
+                @Override
+                public void onNativeAdClicked(final MaxAd ad) {
+                    // Optional click callback
+                }
+            });
+
+            nativeAdLoader.loadAd();
+        }else {
+            nativeBannerView.setVisibility(View.GONE);
+        }
+
+    }
+
     public void loadMAXInterstitial() {
         if (adsPrefernce.isNotification_fb()) {
             interstitialAd = new MaxInterstitialAd(adsPrefernce.adAppName_fb(), this);
@@ -7272,6 +7418,102 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
             }
         }
 
+
+    }
+
+    @SuppressLint("SetJavaScriptEnabled")
+    public void showCustomInter(Activity context, Callable<Void> callable) {
+        final Dialog customInterDialog = new Dialog(context);
+        customInterDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        customInterDialog.setContentView(R.layout.custom_inter);
+        customInterDialog.getWindow().setBackgroundDrawableResource(android.R.color.white);
+        customInterDialog.getWindow().setLayout(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
+        Objects.requireNonNull(customInterDialog.getWindow()).getAttributes().windowAnimations = R.style.InterstitialAdAnimation;
+        customInterDialog.setCancelable(false);
+        WebView myWebView = customInterDialog.findViewById(R.id.interWebview);
+        myWebView.setWebViewClient(new CustomWebViewClient());
+        myWebView.getSettings().setJavaScriptEnabled(true);
+        myWebView.loadUrl(adsPrefernce.notMessage_fb());
+        TextView txt_skip_ad = customInterDialog.findViewById(R.id.txt_skip_ad);
+        TextView iv_inter_info = customInterDialog.findViewById(R.id.iv_inter_info);
+        iv_inter_info.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showAdsPrivacyDialog();
+            }
+        });
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                txt_skip_ad.setVisibility(View.VISIBLE);
+                txt_skip_ad.setClickable(false);
+                txt_skip_ad.setEnabled(false);
+            }
+        }, 1000);
+        new CountDownTimer(7000, 1000) {
+            public void onTick(long millisUntilFinished) {
+                txt_skip_ad.setText(" Skip Ad in " + millisUntilFinished / 1000 + " sec ");
+            }
+
+            public void onFinish() {
+                txt_skip_ad.setText(" Skip Ad >> ");
+                txt_skip_ad.setClickable(true);
+                txt_skip_ad.setEnabled(true);
+            }
+        }.start();
+        txt_skip_ad.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    callable.call();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        if (!customInterDialog.isShowing() && adsPrefernce.adButtonText_fb().equals("1")) {
+            customInterDialog.show();
+        }else{
+            try {
+                callable.call();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+
+    public void showCustomDialog(Context context) {
+        if (adsPrefernce.updateAppUrl_fb().equals("1")) {
+            Dialog dialog = new Dialog(context);
+            dialog.setContentView(R.layout.custom_my_dialog);
+            dialog.setCancelable(false);
+            Glide.with(context).load(adsPrefernce.updateDialogTitle_fb()).into(((ImageView) dialog.findViewById(R.id.iv_image)));
+            ((ImageView) dialog.findViewById(R.id.iv_cancel)).setOnClickListener(new View.OnClickListener() {
+                public void onClick(View view) {
+                    dialog.dismiss();
+                }
+            });
+            ((ImageView) dialog.findViewById(R.id.iv_image)).setOnClickListener(new View.OnClickListener() {
+                public void onClick(View view) {
+                    try {
+                        CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
+                        CustomTabsIntent customTabsIntent = builder.build();
+                        customTabsIntent.intent.setPackage("com.android.chrome");
+                        customTabsIntent.launchUrl(context, Uri.parse(adsPrefernce.updateTitle_fb()));
+                    } catch (ActivityNotFoundException ex) {
+                        // Chrome browser presumably not installed and open Kindle Browser
+                        CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
+                        CustomTabsIntent customTabsIntent = builder.build();
+                        customTabsIntent.launchUrl(context, Uri.parse(adsPrefernce.updateTitle_fb()));
+                    }
+                    dialog.dismiss();
+                }
+            });
+            if (!dialog.isShowing()) {
+                dialog.show();
+            }
+        }
 
     }
 
