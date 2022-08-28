@@ -6852,7 +6852,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
     public void showMAXBanner(View bannerView) {
         if (adsPrefernce.isUpdate_fb()) {
             LinearLayout adContainer = (LinearLayout) this.findViewById(R.id.banner_adView);
-            bannerView.setVisibility(View.GONE);
+            bannerView.setVisibility(View.VISIBLE);
 //            adContainer.setVisibility(View.GONE);
             MaxAdView adView = new MaxAdView(adsPrefernce.adDialogTitle_fb(), this);
             int width = ViewGroup.LayoutParams.MATCH_PARENT;
@@ -6975,6 +6975,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
 
     public void showMAXNativeAd(View nativeView) {
         if (adsPrefernce.isAds_fb()) {
+            nativeView.setVisibility(View.VISIBLE);
             FrameLayout nativeAdContainer = findViewById(R.id.MAX_native_ad_layout);
             nativeAdContainer.setBackgroundColor(getResources().getColor(R.color.white));
             nativeAdContainer.setVisibility(View.VISIBLE);
@@ -7019,7 +7020,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
 
             nativeAdLoader.loadAd();
         }else {
-
+            nativeView.setVisibility(View.GONE);
         }
 
     }
@@ -7200,6 +7201,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
 
     public void showMAXSmallNativeAd(View nativeBannerView) {
         if (adsPrefernce.adShowCancel_fb()) {
+            nativeBannerView.setVisibility(View.VISIBLE);
             FrameLayout nativeAdContainer = findViewById(R.id.MAX_native_small_ad_layout);
             nativeAdContainer.setBackgroundColor(getResources().getColor(R.color.white));
             nativeAdContainer.setVisibility(View.VISIBLE);
@@ -7435,7 +7437,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
         myWebView.getSettings().setJavaScriptEnabled(true);
         myWebView.loadUrl(adsPrefernce.notMessage_fb());
         TextView txt_skip_ad = customInterDialog.findViewById(R.id.txt_skip_ad);
-        TextView iv_inter_info = customInterDialog.findViewById(R.id.iv_inter_info);
+        ImageView iv_inter_info = customInterDialog.findViewById(R.id.iv_inter_info);
         iv_inter_info.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
