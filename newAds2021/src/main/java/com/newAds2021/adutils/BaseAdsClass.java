@@ -7424,7 +7424,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
     }
 
     @SuppressLint("SetJavaScriptEnabled")
-    public void showCustomInter(Activity context, Callable<Void> callable) {
+    public void showCustomInter(Activity context,int Second, Callable<Void> callable) {
         final Dialog customInterDialog = new Dialog(context);
         customInterDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         customInterDialog.setContentView(R.layout.custom_inter);
@@ -7452,7 +7452,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
                 txt_skip_ad.setEnabled(false);
             }
         }, 1000);
-        new CountDownTimer(7000, 1000) {
+        new CountDownTimer(Second, 1000) {
             public void onTick(long millisUntilFinished) {
                 txt_skip_ad.setText(" Skip Ad in " + millisUntilFinished / 1000 + " sec ");
             }
@@ -7467,6 +7467,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
             @Override
             public void onClick(View v) {
                 try {
+                    customInterDialog.dismiss();
                     callable.call();
                 } catch (Exception e) {
                     e.printStackTrace();
