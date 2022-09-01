@@ -30,11 +30,11 @@ public class CustomWebViewClient extends WebViewClient {
             e.printStackTrace();
         }
 
-        if (domain.contains(GAMEZOP_URL)) {
+//        if (domain.contains(GAMEZOP_URL)) {
             view.loadUrl(url);
-        } else {
-            loadOutsideWebView(view, url);
-        }
+//        } else {
+//            loadOutsideWebView(view, url);
+//        }
         return true;
     }
 
