@@ -43,6 +43,12 @@ public class MainActivity extends BaseActivity {
 //                AppService("1.0");
 //                    loadMAXRewardedAds();
 //                    loadMAXInterstitial();
+                showCustomInter(MainActivity.this, 7000, new Callable<Void>() {
+                    @Override
+                    public Void call() throws Exception {
+                        return null;
+                    }
+                });
                 return null;
             }
         });
@@ -51,7 +57,7 @@ public class MainActivity extends BaseActivity {
 //        text.setText(" "+adsPrefernce.isAds_fb() + adsPrefernce.adButtonText_fb());
 
 //            Log.e("list",""+movies.get(0).getId());
-        ShowQurekaInterstationAds(MainActivity.this,1);
+//        ShowQurekaInterstationAds(MainActivity.this,1);
 
     }
     public void Inter1(View view) {

@@ -7438,6 +7438,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
         myWebView.loadUrl(adsPrefernce.notMessage_fb());
         TextView txt_skip_ad = customInterDialog.findViewById(R.id.txt_skip_ad);
         ImageView iv_inter_info = customInterDialog.findViewById(R.id.iv_inter_info);
+        ImageView iv_close_ad = customInterDialog.findViewById(R.id.iv_close_ad);
         iv_inter_info.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -7458,12 +7459,25 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
             }
 
             public void onFinish() {
-                txt_skip_ad.setText(" Skip Ad >> ");
+                txt_skip_ad.setText(" Close Ad ");
+                iv_close_ad.setVisibility(View.VISIBLE);
                 txt_skip_ad.setClickable(true);
                 txt_skip_ad.setEnabled(true);
+
             }
         }.start();
         txt_skip_ad.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    customInterDialog.dismiss();
+                    callable.call();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        iv_close_ad.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 try {
