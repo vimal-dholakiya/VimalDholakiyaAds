@@ -37,6 +37,7 @@ public class MainActivity extends BaseActivity {
 //        getBlogMoviesList();
 //        loadMAXRewardedAds();
         loadMAXInterstitial();
+
         withDelay(3000, new Callable<Void>() {
             @Override
             public Void call() throws Exception {
@@ -49,7 +50,9 @@ public class MainActivity extends BaseActivity {
                         return null;
                     }
                 });
+                Toast.makeText(MainActivity.this, adsPrefernce.extrapara1()+"", Toast.LENGTH_SHORT).show();
                 return null;
+
             }
         });
 //        setAdsUrlID("AKfycbwWa0oIwNsZ4b7b-aIGi61iyJ98XFCy2kbfXNC-ZhiIkHtlHu2R88r-gzHc7eigJykh7A/exec");

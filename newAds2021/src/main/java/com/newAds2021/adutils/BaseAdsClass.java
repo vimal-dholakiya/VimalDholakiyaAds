@@ -1,5 +1,6 @@
 package com.newAds2021.adutils;
 
+import static android.content.ContentValues.TAG;
 import static com.newAds2021.adsmodels.ConstantAds.ad_bg_drawable;
 import static com.newAds2021.adsmodels.ConstantAds.dismisProgress;
 import static com.newAds2021.adsmodels.ConstantAds.showProgress;
@@ -178,6 +179,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
             public Void call() throws Exception {
                 if (!isLoaded_ADS) {
                     getAdsx();
+
                 }
 
                 return null;
@@ -211,6 +213,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
                 adsDetailsArrayList = new ArrayList<>();
                 ihAdsDetails = new ArrayList<>();
                 adsDetailsArrayListFB = new ArrayList<>();
+
                 try {
                     if (adsDetails.getAdsData() != null) {
                         adsDetailsArrayList = adsDetails.getAdsData();
@@ -258,6 +261,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
                             if (ConstantAds.PRELOAD_APPOPEN) {
                                 loadAppOpenAds(BaseAdsClass.this);
                             }
+
 
                         }
 
@@ -380,11 +384,13 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
                 }
 
 
+
             }
 
             @Override
             public void onFailure(@NonNull Call<AdsDetails> call, @NonNull Throwable t) {
-
+                Toast.makeText(BaseAdsClass.this, t+"", Toast.LENGTH_SHORT).show();
+                Log.e("goggg", t.getLocalizedMessage());
             }
         });
     }
@@ -395,6 +401,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
         final String installer = context.getPackageManager().getInstallerPackageName(context.getPackageName());
         return installer != null && validInstallers.contains(installer);
     }
+
 
     public void validateInstall(Callable<Void> callable) {
         if (!adsPrefernce.allowAccess()) {
