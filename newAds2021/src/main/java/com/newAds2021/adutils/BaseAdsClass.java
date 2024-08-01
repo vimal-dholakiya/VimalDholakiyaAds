@@ -213,7 +213,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
                 adsDetailsArrayList = new ArrayList<>();
                 ihAdsDetails = new ArrayList<>();
                 adsDetailsArrayListFB = new ArrayList<>();
-
+//                Toast.makeText(BaseAdsClass.this, response.body().getAdsData().get(0).getExtraPara1()+"gggg", Toast.LENGTH_SHORT).show();
                 try {
                     if (adsDetails.getAdsData() != null) {
                         adsDetailsArrayList = adsDetails.getAdsData();
@@ -222,6 +222,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
 
                         AdsData ads = adsDetailsArrayList.get(0);
                         AdsDataFB adsfb = adsDetailsArrayListFB.get(0);
+
 
                         adsPrefernce = new AdsPrefernce(BaseAdsClass.this);
                         if (adsDetailsArrayList != null && adsDetailsArrayList.size() > 0) {
@@ -381,6 +382,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
                 } catch (Exception e) {
                     e.printStackTrace();
 
+
                 }
 
 
@@ -389,7 +391,6 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
 
             @Override
             public void onFailure(@NonNull Call<AdsDetails> call, @NonNull Throwable t) {
-                Toast.makeText(BaseAdsClass.this, t+"", Toast.LENGTH_SHORT).show();
                 Log.e("goggg", t.getLocalizedMessage());
             }
         });

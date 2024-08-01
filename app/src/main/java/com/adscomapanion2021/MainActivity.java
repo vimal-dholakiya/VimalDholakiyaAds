@@ -50,7 +50,7 @@ public class MainActivity extends BaseActivity {
                         return null;
                     }
                 });
-                Toast.makeText(MainActivity.this, adsPrefernce.extrapara1()+"", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(MainActivity.this, adsPrefernce.showAds()+"", Toast.LENGTH_SHORT).show();
                 return null;
 
             }
