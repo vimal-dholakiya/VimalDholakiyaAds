@@ -13,21 +13,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
     <Button
-        android:onClick="Inter2"
-        android:text="Inter2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-    <Button
-        android:onClick="Inter3"
-        android:text="Inter3"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-    <Button
-        android:onClick="AppOpen1"
-        android:text="AppOpen1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-    <Button
         android:onClick="showBanner"
         android:text="Banner"
         android:layout_width="match_parent"
@@ -37,43 +22,44 @@
         android:text="Native"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
+
     <Button
-        android:onClick="showIHBanner"
-        android:text="IH Banner"
+        android:onClick="showNative1"
+        android:text="NativeBig"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
-    <Button
-        android:onClick="showIHInter"
-        android:text="IH Inter"
+
+
+    <RelativeLayout
+        android:id="@+id/rel_Native"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-    <Button
-        android:onClick="showIHNative"
-        android:text="IH Native"
+        android:layout_height="120dp">
+
+        <include
+            layout="@layout/native_ad_layout_small"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rel_Native1"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-    <Button
-        android:onClick="QurekaOnClick"
-        android:text="Qureka"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-    <Button
-        android:onClick="MAXRevordAds"
-        android:text="MaX Reword Ads"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="320dp">
+
+        <include
+            layout="@layout/native_ad_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true" />
+    </RelativeLayout>
+
+
+
     <include
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
         layout="@layout/banner_ad_layout"/>
-    <include
-        android:layout_height="wrap_content"
-        android:layout_width="match_parent"
-        layout="@layout/native_ad_layout_small"/>
-    <include
-        android:layout_height="wrap_content"
-        android:layout_width="match_parent"
-        layout="@layout/native_ad_layout"/>
 
     <TextView
         android:id="@+id/text"

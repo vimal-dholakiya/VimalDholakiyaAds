@@ -1,0 +1,11 @@
+
+--> for Banner
+        layout="@layout/banner_ad_layout"
+        showBannerAd()
+--> for Native
+        layout="@layout/native_ad_layout_small"
+        layout="@layout/native_ad_layout"
+        showNativeAd(boolean isSmall)
+        showNativeAd(boolean isSmall, View nativeView)
+
+

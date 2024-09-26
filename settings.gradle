@@ -1,4 +1,3 @@
-rootProject.name = "VimalDholakiyaAds"
+rootProject.name = "VimsitsolutionsAds"
 include ':app'
-include ':newAds2021'
-include ':mylibrary'
+include ':newAds2024'

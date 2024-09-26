@@ -1,0 +1,8 @@
+<resources>
+
+    <string name="fb_inter_id1">YOUR_PLACEMENT_ID</string>
+
+    <string name="privacy_inhouse">This Ad is servered by Developer of this app, We do not take any personal or identificable information of our user while showing this ad. Our User\'s Privacy is our topmost priority.\n
+    \nYou can check Application\'s Privacy Policy for more Information.\n\nNote: Google, Google Play Store and Play Store Logo is trademark of Google Inc.</string>
+
+</resources>

@@ -7,7 +7,6 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
-        android:name=".MyAdsClass"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -33,13 +32,7 @@
 <!--            </intent-filter>-->
         </activity>
 
-        <meta-data
-            android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="@string/admob_app_id" />
 
-<!--        <meta-data-->
-<!--            android:name="applovin.sdk.key"-->
-<!--            android:value="OoVicuSE_6dVkTnZ9kO67XO17hAqRXOdR5KToHkHP3P3SvSnBI8CUmuxbWFg0hHk8kXx2byHKiial9QUapI_ls"/>-->
     </application>
 
 </manifest>
